@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" dir="ltr" lang="fr">
+
+	<head>
+		<title>
+					test jquery.drawinglibrary.js
+		</title>
+		<!-- //
+		
+		OpenStudio
+		
+		le bourg
+		43160 Saint Pal de Senouire
+		+33 4 71 00 10 75
+		www.openstudio.fr
+		____________________________________________
+		
+		-->
+		
+		<meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+		<script type="text/javascript" src="js/jquery.js"></script>
+		<script type="text/javascript" src="js/jquery.svg.js"></script>
+		<script type="text/javascript" src="js/jquery.drawinglibrary.js"></script>
+
+
+
+		<script type="text/javascript">
+
+		$(document).ready(function(){
+			
+			$("#example1").drawLine(0, 0, 220, 45);
+			$("#example2").drawEllipse(5, 5, 220, 55, {color: '#0a87d6', stroke: 2});
+			$("#example3").fillArc(0, 0, 100, 45, 260, {color: '#ffa500'}).fillArc(0, 0, 100, 260, 310, {color: '#00c7ee'}).fillArc(0, 0, 100, 310, 45, {color: '#46aa08'});
+			$("#example4").fillEllipse(255, 10, 90, 100, {color: '#ffd1ff'}).fillEllipse(270, 48, 17, 10, {color: 'white'}).fillEllipse(315, 48, 17, 10, {color: 'white'}).fillEllipse(319, 48, 10, 10, {color: '#00a7ee'});
+			$("#example4").fillEllipse(274, 48, 10, 10, {color: '#00a7ee'}).fillEllipse(320, 50, 7, 5, {color: 'black'}).fillEllipse(275, 50, 7, 5, {color: 'black'});
+			$("#example4").fillEllipse(285, 85, 30, 10, {color: '#ee86ff'}).drawLine(300, 55, 295, 70, {color: '#8f6d99', stroke: 3}).drawLine(295, 70, 300, 70, {color: '#8f6d99', stroke: 3});
+			$("#example4").drawLine(287, 89, 312, 89, {color: '#fd4717', stroke: 2}).fillArc(250, -10, 100,  0, 180, {color: '#d9db56'});
+		});
+	  	</script>
+		<style type="text/css">
+			.canvas{
+				position: relative;
+				width: 100%;
+				height: 130px;
+			}
+		</style>
+	</head>
+	<body>				
+		
+
+
+	<div class="limiter">
+			
+				<h1>
+					test jquery.wz_jsgraphics.js
+				</h1>
+
+					
+				<div id="example1" class="canvas"></div>
+				<div id="example2" class="canvas"></div>
+				<div id="example3" class="canvas"></div>
+				<div id="example4" class="canvas"></div>
+				
+				<p>Documentation : <a href="http://www.openstudio.fr/Library-for-simple-drawing-with.html">http://www.openstudio.fr/Library-for-simple-drawing-with.html</a></p>
+
+				<p> <strong>Note :</strong> that you need configure your web server for svg files.<br/>
+				with apache, simply add this line on your .htaccess :</p>
+				<code>AddType image/svg+xml .svg .svgz</code> 
+				
+
+
+
+		
+		<noscript>
+	        	<p>Sorry, you need to activate JavaScript in your browser.</p>
+	    </noscript>					
+	</body>
+</html>
