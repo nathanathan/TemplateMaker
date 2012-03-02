@@ -17,6 +17,7 @@ jQuery(function($){
 	var jcrop_api;
 
 	$("#draggable-box").draggable({ handle: '#handy-handle', containment: 'document' });
+	$("#draggable-box2").draggable({ handle: '#handy-handle2', containment: 'document' });
 
 	//Initialize jquery ui tabs
 	$( "#tabs" ).tabs({
@@ -111,12 +112,10 @@ jQuery(function($){
 
 		$("#demo1").bind("select_node.jstree", jsTreeNodeSelect);
 	}
-
+/*
 	var newNodeSelected = function(){};
-
 	function jsTreeNodeSelect(e, data){
 		newNodeSelected();
-	
 		if(data.rslt.obj.data("field")){
 			var markupRef = $('.'+data.rslt.obj.data("field"));
 			markupRef.css('border', '2px solid red');
@@ -145,10 +144,8 @@ jQuery(function($){
 		//debugVar = data;
 		//alert(data.rslt.obj.data("field"));
 	}
-
-
+*/
 });
-
 // Simple event handler, called from onChange and onSelect
 // event handlers, as per the Jcrop invocation above
 function showCoords(c)
@@ -214,7 +211,6 @@ function safeAddNode(place){
 }
 
 //Form Drawing functions:
-
 function segmentFunction(segment, index){
 	var borderWidth = 2;
 	//safeAddNode($("#demo1"));

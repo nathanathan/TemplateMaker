@@ -27,7 +27,7 @@
 
 		<!-- For me -->
 		<script type="text/javascript" src="js/mScanTemplateMaker.js"></script>
-		<script type="text/javascript"></script>
+		<link rel="stylesheet" href="css/mScanTemplateMaker.css" type="text/css" />
 
 	</head>
 <body>
@@ -65,12 +65,7 @@
 			<!-- This is the image we're attaching Jcrop to -->
 			<img src="checkbox_form_2.jpg" id="target" alt="form" />
 
-			<!-- This is the form that our event handler fills -->
-			<form id="coords"
-			      class="coords"
-			      onsubmit="return false;"
-			      action="http://example.com/post.php">
-
+			<div id="coords" class="coords">
 				<div>
 					<label>X1 <input type="text" size="4" id="x1" name="x1" /></label>
 					<label>Y1 <input type="text" size="4" id="y1" name="y1" /></label>
@@ -78,9 +73,8 @@
 					<label>Y2 <input type="text" size="4" id="y2" name="y2" /></label>
 					<label>W <input type="text" size="4" id="w" name="w" /></label>
 					<label>H <input type="text" size="4" id="h" name="h" /></label>
-					<button id="test">make rect</button>
 				</div>
-			</form>
+			</div>
 		</center>
 
 	</div>
