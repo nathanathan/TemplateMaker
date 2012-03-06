@@ -1,8 +1,8 @@
 mScan Template Maker
 =====
 
-This is a javascript webapp that helps form templates for use with mScan.
-Form templates can be used to describe the location of content in arbitrary forms.
+This is a javascript webapp designed to assist in the creation of form templates for use with mScan.
+Form templates can be used to describe the location of content on arbitrary forms.
 
 Using the project:
 ------------------
@@ -18,5 +18,3 @@ Libraries used:
 * JSTree
 * Jcrop
 * JSONLint
-
-
