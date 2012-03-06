@@ -1,7 +1,89 @@
 var templateObject;
 var debugVar = "hi";
 
+//TODO: Make JSTree into separate module.
+
 jQuery(function($){
+
+
+	var dropbox = $('#dropbox'),
+		message = $('.message', dropbox);
+	
+	dropbox.filedrop({
+		// The name of the $_FILES entry:
+		paramname:'pic',
+		
+		maxfiles: 1,
+    		maxfilesize: 22,
+		
+		error: function(err, file) {
+			switch(err) {
+				case 'BrowserNotSupported':
+					showMessage('Your browser does not support HTML5 file uploads!');
+					break;
+				case 'TooManyFiles':
+					alert('Too many files! Please select 5 at most! (configurable)');
+					break;
+				case 'FileTooLarge':
+					alert(file.name+' is too large! Please upload files up to 2mb (configurable).');
+					break;
+				default:
+					break;
+			}
+		},
+		
+		// Called before each upload is started
+		beforeEach: function(file){
+			if(!file.type.match(/^image\//)){
+				alert('Only images are allowed!');
+				
+				// Returning false will cause the
+				// file to be rejected
+				return false;
+			}
+		},
+		
+		uploadStarted:function(i, file, len){
+			createImage(file);
+		}
+    	 
+	});
+	
+
+	function createImage(file){
+
+		var reader = new FileReader();
+		reader.onload = function(e){
+			
+			// e.target.result holds the DataURL which
+			// can be used as a source of the image:
+			
+			$(".target").attr('src',e.target.result);
+			$(".target").css("width", "100%");
+			$(".target").css("height", "100%");
+		};
+		
+		// Reading the file as a DataURL. When finished,
+		// this will trigger the onload function above:
+		reader.readAsDataURL(file);
+		
+		message.hide();
+		//preview.appendTo(dropbox);
+		
+		// Associating a preview container
+		// with the file, using jQuery's $.data():
+		
+		//$.data(file,preview);
+
+		jcrop_api.destroy();
+		initJCrop();
+	}
+
+	function showMessage(msg){
+		message.html(msg);
+	}
+
+	/////////
 
 	$("#save").click(function(){
 		uriContent = "data:application/octet-stream," + encodeURIComponent($("textarea#json").text());
@@ -32,21 +114,8 @@ jQuery(function($){
 			}
 
 			if (ui.panel.id == "tabs-1") {
-				//Need to validate
-				templateObject = $.parseJSON( $("textarea#json").text() );
-				if(templateObject == null) return;
-
-				//Initialize jcrop
-				$('#target').Jcrop({
-					onChange:   showCoords,
-					onSelect:   showCoords,
-					onRelease:  clearCoords
-				}, function(){
-					jcrop_api = this;
-					//When jcrop is initialized render the json template.
-					//We wait because they share a container.
-					formFunction(templateObject);
-				});
+				
+				initJCrop();
 
 				initJSTree(templateObject);
 			}
@@ -56,6 +125,24 @@ jQuery(function($){
 			}
 		}
 	});
+
+	function initJCrop(){
+		//Need to validate
+		templateObject = $.parseJSON( $("textarea#json").text() );
+		if(templateObject == null) return;
+
+		//Initialize jcrop
+		$('.target').Jcrop({
+			onChange:   showCoords,
+			onSelect:   showCoords,
+			onRelease:  clearCoords
+		}, function(){
+			jcrop_api = this;
+			//When jcrop is initialized render the json template.
+			//We wait because they share a container.
+			formFunction(templateObject);
+		});	
+	}
 
 	function initJSTree(form){
 		$("#demo1")
@@ -110,7 +197,7 @@ jQuery(function($){
 				// you get two params - event & data - check the core docs for a detailed description
 			});
 
-		$("#demo1").bind("select_node.jstree", jsTreeNodeSelect);
+		//$("#demo1").bind("select_node.jstree", jsTreeNodeSelect);
 	}
 /*
 	var newNodeSelected = function(){};

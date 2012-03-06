@@ -25,9 +25,14 @@
 		<script type="text/javascript" src="jstree/jquery.jstree.js"></script>
 		<link type="text/css" rel="stylesheet" href="jstree/_docs/!style.css"/>
 
+		<!-- Image load -->
+		<script src="assets/js/jquery.filedrop.js"></script>
+		<!-- <script src="assets/js/script.js"></script> -->
+
 		<!-- For me -->
 		<script type="text/javascript" src="js/mScanTemplateMaker.js"></script>
 		<link rel="stylesheet" href="css/mScanTemplateMaker.css" type="text/css" />
+
 
 	</head>
 <body>
@@ -63,8 +68,9 @@
 
 		<center>
 			<!-- This is the image we're attaching Jcrop to -->
-			<img src="checkbox_form_2.jpg" id="target" alt="form" />
-
+			<div id="dropbox">
+			<img src="checkbox_form_2.jpg" id="target" class="target" alt="form" />
+			</div>
 			<div id="coords" class="coords">
 				<div>
 					<label>X1 <input type="text" size="4" id="x1" name="x1" /></label>
@@ -100,5 +106,4 @@
 </div>
 </div>
 </body>
-
 </html>
