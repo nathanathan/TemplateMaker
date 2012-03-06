@@ -1,0 +1,10 @@
+.coords{
+	position:absolute;
+	right:100px;
+	top:150px;
+	background-color: #FFF;
+	border: solid 1px #000;
+}
+label{
+	display: block;
+}
