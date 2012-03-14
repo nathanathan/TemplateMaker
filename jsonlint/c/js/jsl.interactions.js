@@ -191,23 +191,25 @@ jsl.interactions = (function () {
             $('#headerText').html('JSONLint<span class="light">Lite</span>');
         }
 
+        
         $('#validate').click(function () {
             $('#results_header, #loadSpinner').show();
 
             var jsonVal = $.trim($('#json_input').val());
-
+            
             if (jsonVal.substring(0, 4).toLowerCase() === "http") {
                 $.post("proxy.php", {"url": jsonVal}, function (responseObj) {
                     $('#json_input').val(responseObj.content);
                     validate();
                 }, 'json');
             } else {
+                
                 validate();
             }
 
             return false;
         });
-        
+
         $('#json_input').keyup(function () {
             $('div.linedwrap').removeClass('greenBorder').removeClass('redBorder');
         }).linedtextarea({
@@ -218,21 +220,15 @@ jsl.interactions = (function () {
             $('#json_input').val('').focus();
         });
 
-        $('#faqButton').click(function () {
-            $('#faq').slideToggle();
-        });
-
         if (jsonParam) {
             $('#json_input').val(jsonParam);
             $('#validate').click();
         }
     }
-
     return {
-        'init': init
+        'init': init,
     };
 }());
 
-$(function () {
-    jsl.interactions.init();    
-});
+
+jsl.interactions.init();

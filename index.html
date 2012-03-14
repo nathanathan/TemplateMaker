@@ -18,8 +18,7 @@
 		<!-- For json deserialization -->
 		<script type="text/javascript" src="js/json2.js"></script>
 
-
-		<!-- For jstree -->
+        <!-- For jstree -->
 		<script type="text/javascript" src="jstree/_lib/jquery.cookie.js"></script>
 		<script type="text/javascript" src="jstree/_lib/jquery.hotkeys.js"></script>
 		<script type="text/javascript" src="jstree/jquery.jstree.js"></script>
@@ -29,10 +28,27 @@
 		<script src="assets/js/jquery.filedrop.js"></script>
 		<!-- <script src="assets/js/script.js"></script> -->
 
-		<!-- For me -->
+    	<!-- For me -->
 		<script type="text/javascript" src="js/mScanTemplateMaker.js"></script>
-		<link rel="stylesheet" href="css/mScanTemplateMaker.css" type="text/css" />
-
+        <link rel="stylesheet" href="css/mScanTemplateMaker.css" type="text/css" />
+        
+        <!-- Validator -->
+        <!--
+        <script type="text/javascript">
+            if (typeof JSON === 'undefined') {
+                document.write('<sc' + 'ript type="text/javascript" src="jsonlint/c/js/json2.js"></sc' + 'ript>');
+            }
+        </script>
+        <script src="jsonlint/c/js/jquery-linedtextarea/jquery-linedtextarea.js" type="text/javascript"></script>
+        <link href="jsonlint/c/js/jquery-linedtextarea/jquery-linedtextarea.css" type="text/css" rel="stylesheet">
+        <script type="text/javascript" src="jsonlint/c/js/jsl.parser.js"></script>
+        <script type="text/javascript" src="jsonlint/c/js/jsl.format.js"></script>
+        <script type="text/javascript" src="jsonlint/c/js/jsl.interactions.js"></script>
+        <link rel="stylesheet" href="jsonlint/c/css/blueprint/compressed/screen.css" type="text/css" media="screen, projection">
+              
+        <link rel="stylesheet" href="jsonlint/c/css/blueprint/plugins/css-classes/css-classes.css" type="text/css" media="screen, projection">
+        <link rel="stylesheet" href="jsonlint/c/css/screen.css" type="text/css" media="screen, projection">
+        --><!--[if IE]><link rel="stylesheet" href="jsonlint/c/css/blueprint/lib/ie.css" type="text/css" media="screen, projection"><![endif]--> 
 
 	</head>
 <body>
@@ -40,32 +56,39 @@
 
 <div id="tabs">
 	<ul>
-		<li><a href="#tabs-2">JSON</a></li>
-		<li><a href="#tabs-1">Rendered Template</a></li>
-		<li><a href="load-image.html"><span>Load Image</span></a></li>
+        <li><a href="#imageUpload">Upload Image</a></li>
+		<li><a href="#jsonEditor">JSON</a></li>
+		<li><a href="#rendered">Rendered Template</a></li>
 	</ul>
-	<div id="tabs-1">
-		<!-- <h1>Template Editor</h1> -->
-		<div id="draggable-box" style="z-index:1000;">
-			<div id="handy-handle" class="ui-widget-header" style="width:100px;">Draggable</div>
-			<div id="demo1" class="demo" >
-				<ul>
-					<li id="phtml_1">
-						<a href="#">Root node 1</a>
-						<ul>
-							<li id="phtml_2">
-								<a href="#">Child node 1</a>
-							</li>
 
-						</ul>
-					</li>
-					<li id="phtml_4">
-						<a href="#">Root node 2</a>
-					</li>
-				</ul>
-			</div>
-		</div>
+    <div id="imageUpload">
+		<!-- <div id="dropbox"></div> -->
+	</div>
 
+    <div id="jsonEditor">
+		<button id="save">Save</button>
+        <form id="JSONValidate" method="post" action="." name="JSONValidate">
+            <input type="hidden" id="reformat" value="1" />
+            <input type="hidden" id="compress" value="0" />
+            <div>
+                <textarea id="json_input" name="json_input" class="json_input" rows="30" cols="100" spellcheck="false" placeholder="Enter JSON to validate, or a URL to JSON to validate."></textarea>
+            </div>
+            <div class="validateButtons clear">
+                <div class="left">
+                    <button name="validate" id="validate" value="Validate" class="button left bold">Validate</button>
+                </div>
+            </div>
+        </form>
+        <div id="results_header" class="hide">
+            <h3>
+                Results <img title="Loading..." class="reset" alt="Loading" src="c/images/loadspinner.gif" id="loadSpinner" name="loadSpinner">
+            </h3>
+        </div>
+        <pre id="results"></pre>
+	</div>
+
+	<div id="rendered">
+    
 		<center>
 			<!-- This is the image we're attaching Jcrop to -->
 			<div id="dropbox">
@@ -82,11 +105,7 @@
 				</div>
 			</div>
 		</center>
-
-	</div>
-	<div id="tabs-2">
-		<button id="save">Save</button>
-		<textarea id="json" rows="500" style="width:100%;"></textarea>
+        
 	</div>
 </div>
 

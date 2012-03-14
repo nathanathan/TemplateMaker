@@ -30,6 +30,7 @@
  *   - 2010.01.06: Initial Release
  *
  */
+var intervalId;
 (function($) {
 
 	$.fn.linedtextarea = function(options) {
@@ -116,15 +117,15 @@
 				linesDiv.height( domTextArea.clientHeight + 6 );
 			});
 			
-			
-			window.setInterval( function(tn) {
+			/*
+			intervalId = window.setInterval( function(tn) {
 				linesDiv.height(textarea.height());
 				var scrollTop 		= textarea[0].scrollTop;
 				var clientHeight 	= textarea[0].clientHeight;
 				codeLinesDiv.css( {'margin-top': (-1*scrollTop) + "px"} );
 				lineNo = fillOutLines( codeLinesDiv, scrollTop + clientHeight, lineNo );
 			},10);
-				
+			*/	
 		});
 	};
 
