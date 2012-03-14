@@ -81,9 +81,6 @@ jQuery(function($){
 	}
 
 	/////////
-    
-    $("#validate").click(function(){
-    });
 
 	$("#save").click(function(){
 		var uriContent = "data:application/octet-stream," + encodeURIComponent($('#json_input').val());
@@ -109,13 +106,19 @@ jQuery(function($){
 			if (ui.panel.id == "jsonEditor") {
 				//Add the json template to the text area
                 $('#json_input').val(JSON.stringify(templateObject, null, 5));
-				//$("textarea#json").text(JSON.stringify(templateObject, null, 5));
 			}
 		},
-        select: function(event, ui) { 
+        select: function(event, ui) {
 			if(jcrop_api){
 				jcrop_api.destroy();
 			}
+            if( validate() ){
+                templateObject = $.parseJSON($('#json_input').val())
+                return true;
+            }
+            else{
+                return false;
+            }
         }
 	});
 
@@ -140,22 +143,20 @@ jQuery(function($){
 // Simple event handler, called from onChange and onSelect
 // event handlers, as per the Jcrop invocation above
 function showCoords(c)
-{
-	$('#x1').val(c.x);
-	$('#y1').val(c.y);
-	$('#x2').val(c.x2);
-	$('#y2').val(c.y2);
-	$('#w').val(c.w);
-	$('#h').val(c.h);
+{   
+    var segmentObject =
+    {   
+        "x": c.x,
+        "y": c.y,
+        "segment_width": c.w,
+        "segment_height":c.h
+    };
+	$("#json_out").val(JSON.stringify(segmentObject, null, 5));
 };
 
 function clearCoords()
 {
-	$('#coords input').val('');
-	$('#h').css({color:'red'});
-	window.setTimeout(function() {
-		$('#h').css({color:'inherit'});
-		},500);
+	$('#coords').val('');
 };
 function shallowCopy(obj){
 	var outObj = {};
@@ -208,3 +209,22 @@ function formFunction(form){
 		}
 	);
 }
+function validate(){
+    try {
+        var reformat = false;
+        var result = jsonlint.parse(document.getElementById("json_input").value);
+        if (result) {
+            document.getElementById("result").innerHTML = "JSON is valid!";
+            document.getElementById("result").className = "pass";
+            if (reformat) {
+                document.getElementById("source").value = JSON.stringify(result, null, "  ");
+            }
+            return true;
+        }
+    } catch(e) {
+        document.getElementById("result").innerHTML = e;
+        document.getElementById("result").className = "fail";
+        return false;
+    }
+}
+
