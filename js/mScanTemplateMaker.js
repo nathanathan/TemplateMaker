@@ -56,8 +56,8 @@ jQuery(function($){
 			// can be used as a source of the image:
 			
 			$(".target").attr('src',e.target.result);
-			$(".target").css("width", "100%");
-			$(".target").css("height", "100%");
+			$(".target").css("width", "auto");
+			$(".target").css("height", "auto");
 		};
 		
 		// Reading the file as a DataURL. When finished,
@@ -88,12 +88,13 @@ jQuery(function($){
 		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
 	});
 
-	$.getJSON('checkbox_form_2.json', 
+	$.getJSON('example.json', 
 		function(form){
-            //TODO: clean this up
+            //TODO: Load JSON as text.
             templateObject = form;
-            $('#json_input').first().val(JSON.stringify(templateObject, null, 5));
-			//$("textarea#json").text(JSON.stringify(form, null, 5));
+            var jsonText = JSON.stringify(templateObject, null, 5);
+            validate(jsonText);
+            $('#json_input').first().val(jsonText);
 	});
 
 	var jcrop_api;
@@ -105,15 +106,18 @@ jQuery(function($){
 			}
 			if (ui.panel.id == "jsonEditor") {
 				//Add the json template to the text area
-                $('#json_input').val(JSON.stringify(templateObject, null, 5));
+                var jsonText = JSON.stringify(templateObject, null, 5);
+                $('#json_input').val(jsonText);
 			}
 		},
         select: function(event, ui) {
 			if(jcrop_api){
 				jcrop_api.destroy();
 			}
-            if( validate() ){
-                templateObject = $.parseJSON($('#json_input').val())
+            var jsonText = $('#json_input').val();
+            var validJSON = validate(jsonText);
+            if( validJSON ){
+                templateObject = validJSON;
                 return true;
             }
             else{
@@ -138,7 +142,13 @@ jQuery(function($){
 			formFunction(templateObject);
 		});	
 	}
-
+    
+    var warning = true;
+    window.onbeforeunload = function() { 
+      if (warning) {
+        return "If you navigate away from this page you will loose your unsaved changes.";
+      }
+    }
 });
 // Simple event handler, called from onChange and onSelect
 // event handlers, as per the Jcrop invocation above
@@ -209,17 +219,17 @@ function formFunction(form){
 		}
 	);
 }
-function validate(){
+function validate(jsonText){
     try {
         var reformat = false;
-        var result = jsonlint.parse(document.getElementById("json_input").value);
+        var result = jsonlint.parse(jsonText);
         if (result) {
             document.getElementById("result").innerHTML = "JSON is valid!";
             document.getElementById("result").className = "pass";
             if (reformat) {
-                document.getElementById("source").value = JSON.stringify(result, null, "  ");
+                //document.getElementById("source").value = JSON.stringify(result, null, "  ");
             }
-            return true;
+            return result;
         }
     } catch(e) {
         document.getElementById("result").innerHTML = e;
