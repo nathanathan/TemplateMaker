@@ -1,6 +1,6 @@
-
-jQuery(function($){
     var templateObject;
+jQuery(function($){
+
 
 	var dropbox = $('#dropbox'),
 		message = $('.message', dropbox);
@@ -58,6 +58,11 @@ jQuery(function($){
 			$(".target").attr('src',e.target.result);
 			$(".target").css("width", "auto");
 			$(".target").css("height", "auto");
+            $(".target").load(function(){
+                //TODO: There is some kind of bug here, this gets called multiple times
+                templateObject.width = parseInt($(".target").css("width"));
+                templateObject.height = parseInt($(".target").css("height"));
+            });
 		};
 		
 		// Reading the file as a DataURL. When finished,
@@ -111,17 +116,23 @@ jQuery(function($){
 			}
 		},
         select: function(event, ui) {
-			if(jcrop_api){
-				jcrop_api.destroy();
-			}
-            var jsonText = $('#json_input').val();
-            var validJSON = validate(jsonText);
-            if( validJSON ){
-                templateObject = validJSON;
-                return true;
+            //TODO: This works because there are only two tabs.
+            //Decide what to do based on which tab I'm on rather than which is selected.
+            if (ui.panel.id != "rendered") {
+                if(jcrop_api){
+                    jcrop_api.destroy();
+                }
             }
-            else{
-                return false;
+            if (ui.panel.id != "jsonEditor") {
+                var jsonText = $('#json_input').val();
+                var validJSON = validate(jsonText);
+                if( validJSON ){
+                    templateObject = validJSON;
+                    return true;
+                }
+                else{
+                    return false;
+                }
             }
         }
 	});
