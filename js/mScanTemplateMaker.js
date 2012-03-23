@@ -1,5 +1,30 @@
 jQuery(function($){
+    
     var templateObject;
+
+    /////////////
+    //JSON Editing
+    ////////////
+
+	$("#save").click(function(){
+		var uriContent = "data:application/octet-stream," + encodeURIComponent($('#json_input').val());
+		//newWindow=window.open(uriContent, 'generated.json');
+		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
+	});
+
+	$.getJSON('example.json', 
+		function(form){
+            //TODO: Load JSON as text.
+            templateObject = form;
+            var jsonText = JSON.stringify(templateObject, null, 5);
+            validate(jsonText);
+            $('#json_input').first().val(jsonText);
+	});
+
+
+    /////////////
+    //Image Uploader
+    ////////////
 
 	var dropbox = $('#dropbox'),
 		message = $('.message', dropbox);
@@ -50,18 +75,21 @@ jQuery(function($){
 
 		var reader = new FileReader();
 		reader.onload = function(e){
-			
 			// e.target.result holds the DataURL which
 			// can be used as a source of the image:
 			
 			$(".target").attr('src',e.target.result);
 			$(".target").css("width", "auto");
 			$(".target").css("height", "auto");
+            var loaded = false;
             $(".target").load(function(){
-                //TODO: There is some kind of bug here, this gets called multiple times
+                if(loaded){
+                    return;
+                }
                 templateObject.imageFilename = file.name;
                 templateObject.width = parseInt($(".target").css("width"));
                 templateObject.height = parseInt($(".target").css("height"));
+                loaded = true;
             });
 		};
 		
@@ -85,22 +113,7 @@ jQuery(function($){
 		message.html(msg);
 	}
 
-	/////////
-
-	$("#save").click(function(){
-		var uriContent = "data:application/octet-stream," + encodeURIComponent($('#json_input').val());
-		//newWindow=window.open(uriContent, 'generated.json');
-		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
-	});
-
-	$.getJSON('example.json', 
-		function(form){
-            //TODO: Load JSON as text.
-            templateObject = form;
-            var jsonText = JSON.stringify(templateObject, null, 5);
-            validate(jsonText);
-            $('#json_input').first().val(jsonText);
-	});
+    ////////////////
 
 	var jcrop_api;
 	//Initialize jquery ui tabs
