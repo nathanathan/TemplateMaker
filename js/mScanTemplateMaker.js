@@ -59,6 +59,7 @@ jQuery(function($){
 			$(".target").css("height", "auto");
             $(".target").load(function(){
                 //TODO: There is some kind of bug here, this gets called multiple times
+                templateObject.imageFilename = file.name;
                 templateObject.width = parseInt($(".target").css("width"));
                 templateObject.height = parseInt($(".target").css("height"));
             });
@@ -149,7 +150,11 @@ jQuery(function($){
 			jcrop_api = this;
 			//When jcrop is initialized render the json template.
 			//We wait because they share a container.
-			formFunction(templateObject);
+            try{
+			    formFunction(templateObject);
+            }catch(e){
+                alert(e);
+            }
 		});	
 	}
     
