@@ -1,6 +1,5 @@
-    var templateObject;
 jQuery(function($){
-
+    var templateObject;
 
 	var dropbox = $('#dropbox'),
 		message = $('.message', dropbox);
@@ -159,20 +158,25 @@ jQuery(function($){
       if (warning) {
         return "If you navigate away from this page you will loose your unsaved changes.";
       }
-    }
+    };
 });
 // Simple event handler, called from onChange and onSelect
 // event handlers, as per the Jcrop invocation above
 function showCoords(c)
 {   
-    var segmentObject =
-    {   
-        "x": c.x,
-        "y": c.y,
-        "segment_width": c.w,
-        "segment_height":c.h
+    var fieldObject = 
+    {
+        "label": "field",
+        "segments": [
+            {   
+                "x": c.x,
+                "y": c.y,
+                "segment_width": c.w,
+                "segment_height":c.h
+            }
+        ]
     };
-	$("#json_out").val(JSON.stringify(segmentObject, null, 5));
+	$("#json_out").val(JSON.stringify(fieldObject, null, 5));
 };
 
 function clearCoords()
