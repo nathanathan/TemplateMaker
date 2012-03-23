@@ -114,7 +114,8 @@ jQuery(function($){
 	}
 
     ////////////////
-
+    //Tab handling and JCrop
+    ///////////////
 	var jcrop_api;
 	//Initialize jquery ui tabs
 	$( "#tabs" ).tabs({
@@ -149,7 +150,18 @@ jQuery(function($){
             }
         }
 	});
-
+    $("#add_field").click(function(){
+        var validJSON = validate($("#json_out").val());
+        if( validJSON ){
+            templateObject.fields.push(validJSON);
+            jcrop_api.destroy();
+            initJCrop();
+        }
+        else{
+            alert("Invalid JSON");
+        }
+    });
+    
 	function initJCrop(){
 
 		if(templateObject === null) return;
@@ -163,11 +175,7 @@ jQuery(function($){
 			jcrop_api = this;
 			//When jcrop is initialized render the json template.
 			//We wait because they share a container.
-            try{
-			    formFunction(templateObject);
-            }catch(e){
-                alert(e);
-            }
+            formFunction(templateObject);
 		});	
 	}
     
@@ -196,10 +204,9 @@ function showCoords(c)
     };
 	$("#json_out").val(JSON.stringify(fieldObject, null, 5));
 };
-
 function clearCoords()
 {
-	$('#coords').val('');
+	return;
 };
 function shallowCopy(obj){
 	var outObj = {};
