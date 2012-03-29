@@ -1,5 +1,5 @@
 {
-     "imageFilename": "example",
+     "imageFilename": "example.jpg",
      "height": 1169,
      "width": 827,
      "in_type": "classifier",
@@ -69,28 +69,18 @@
                "label": "bubbles",
                "segment_width": 80,
                "segment_height": 100,
-               "y": 900,
                "segments": [
                     {
-                         "x": 100
-                    },
-                    {
-                         "x": 200
-                    },
-                    {
-                         "x": 300
-                    },
-                    {
-                         "x": 400
-                    },
-                    {
-                         "x": 500
-                    },
-                    {
-                         "x": 600
+                         "x": 300,
+                         "y": 900
                     }
                ],
                "training_data_uri": "bubbles",
+               "out_type": "select",
+               "bubble_labels" : 
+    			[
+                    "A", "B","C", "D","E", "F"
+    			],
                "classifier_size": [
                     14,
                     16
