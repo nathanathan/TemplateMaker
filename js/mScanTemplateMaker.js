@@ -227,20 +227,34 @@ function segmentFunction(segment, index){
 			.css('left', segment.x - borderWidth/2 + 'px')
 			.css('width', segment.segment_width - borderWidth/2)
 			.css('height', segment.segment_height - borderWidth/2)
-			.css('border', borderWidth + 'px solid blue')
+			
 			.css('z-index', 289);
+            
+    if(typeof segment.bounded === 'undefined' || segment.bounded){
+        segmentDiv.css('border', borderWidth + 'px solid green')
+    }
+    else{
+        segmentDiv.css('border', borderWidth + 'px dotted green')
+    }
+            
 	segmentDiv.data('segmentObj', segment);
 	//TODO: Different borders for segments and elements
 	$(segment.bubble_locations).each(
 		function(field_idx){
-			segmentDiv.append($('<div></div>')
+            //TODO: Use outline
+			var bubble = $('<div></div>')
 			.css('position', 'absolute')
 			.css('top', this[1] - borderWidth - segment.classifier_size[1]/2 + 'px')
 			.css('left', this[0] - borderWidth - segment.classifier_size[0]/2 + 'px')
 			.css('width', segment.classifier_size[0] - borderWidth/2)
 			.css('height', segment.classifier_size[1] - borderWidth/2)
 			.css('border', borderWidth + 'px solid blue')
-			.css('z-index', 289));
+			.css('z-index', 289);
+            
+            if(segment.training_data_uri == "bubbles"){
+                bubble.addClass("bubble");
+            }
+            segmentDiv.append(bubble);
 		}
 	);
 	$('.jcrop-holder').append(segmentDiv);

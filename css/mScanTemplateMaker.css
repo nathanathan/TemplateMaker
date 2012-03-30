@@ -20,4 +20,8 @@ label{
     color: #933;
     border: 2px solid #933;
 }
+.bubble {
+    -moz-border-radius: 50%;
+	border-radius: 50%;
+}
 textarea { width: 100%; }
