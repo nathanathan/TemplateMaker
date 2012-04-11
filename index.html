@@ -45,10 +45,6 @@
 		<li><a href="#rendered">Rendered Template</a></li>
 	</ul>
 
-    <div id="imageUpload">
-		<!-- <div id="dropbox"></div> -->
-	</div>
-
     <div id="jsonEditor">
         <pre id="result"></pre>
         <textarea id="json_input" rows="50" cols="50"></textarea>
@@ -56,12 +52,18 @@
 	</div>
 
 	<div id="rendered">
-    
+
 		<center>
     		<div id="coords" class="coords">
-                <textarea id="json_out" rows="11" cols="30"></textarea>
-                <button style="display:block;" id="add_field">Add Field</button>
+                <textarea id="json_out" rows="40" cols="30"></textarea>
+                <button style="display:block;" id="add_field">Add/Upate Field</button>
 			</div>
+            <div class="tips">
+                <p>Tips:</p>
+                <ul>
+                <li>To change the form image drag and drop the new image over the current image.</li>
+                </ul>
+            </div>
 			<!-- This is the image we're attaching Jcrop to -->
 			<div id="dropbox">
 			<img src="example.jpg" id="target" class="target" alt="form" />
@@ -78,6 +80,11 @@
 <div class="jcExample">
 <div class="article">
 
+
+<div id="dl_links">
+    <a href="http://deepliquid.com/content/Jcrop_Manual.html">mScan</a>
+    <a href="http://deepliquid.com/content/Jcrop.html">Template Editor Source</a> |
+</div>
 
 <div id="dl_links">
 	<a href="http://deepliquid.com/content/Jcrop.html">Jcrop Home</a> |

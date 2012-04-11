@@ -1,8 +1,19 @@
 .coords{
-	position:absolute;
+	position:fixed;
 	left:0px;
 	top:150px;
-    z-index: 999;
+    z-index: 399;
+}
+.tips{
+    position:fixed;
+	right:0;
+	top:150px;
+    width: 15em;
+    padding: 1em;
+    z-index: 399;
+    text-align:left;
+    background-color: #FFF;
+    border: 1px solid black;
 }
 label{
 	display: block;
@@ -25,3 +36,12 @@ label{
 	border-radius: 50%;
 }
 textarea { width: 100%; }
+.segment{
+    position: absolute;
+    z-index: 389;
+    outline-color: green;
+    outline-width: 2px;
+}
+.selected {
+    outline-color: red;
+}

@@ -1,116 +1,81 @@
 {
-     "imageFilename": "example.jpg",
-     "height": 1169,
-     "width": 827,
-     "in_type": "classifier",
-     "out_type": "number",
-     "fields": [
-          {
-               "label": "square checkboxes",
-               "segments": [
-                    {
-                         "x": 100,
-                         "y": 200,
-                         "segment_width": 100,
-                         "segment_height": 100
-                    },
-                    {
-                         "x": 200,
-                         "y": 200,
-                         "segment_width": 100,
-                         "segment_height": 100
-                    },
-                    {
-                         "x": 300,
-                         "y": 200,
-                         "segment_width": 100,
-                         "segment_height": 100
-                    },
-                    {
-                         "x": 400,
-                         "y": 200,
-                         "segment_width": 100,
-                         "segment_height": 100
-                    },
-                    {
-                         "x": 500,
-                         "y": 200,
-                         "segment_width": 100,
-                         "segment_height": 100
-                    },
-                    {
-                         "x": 600,
-                         "y": 200,
-                         "segment_width": 100,
-                         "segment_height": 100
-                    }
-               ],
-               "training_data_uri": "checkboxes",
-               "classifier_size": [
-                    24,
-                    24
-               ],
-               "bubble_locations": [
-                    [
-                         50,
-                         20
-                    ],
-                    [
-                         50,
-                         50
-                    ],
-                    [
-                         50,
-                         80
-                    ]
-               ]
-          },
-          {
-               "label": "bubbles",
-               "segment_width": 80,
-               "segment_height": 100,
-               "segments": [
-                    {
-                         "x": 300,
-                         "y": 900
-                    }
-               ],
-               "training_data_uri": "bubbles",
-               "out_type": "select",
-               "bubble_labels" : 
-    			[
-                    "A", "B","C", "D","E", "F"
-    			],
-               "classifier_size": [
-                    14,
-                    16
-               ],
-               "bubble_locations": [
-                    [
-                         20,
-                         25
-                    ],
-                    [
-                         60,
-                         25
-                    ],
-                    [
-                         20,
-                         50
-                    ],
-                    [
-                         60,
-                         50
-                    ],
-                    [
-                         20,
-                         75
-                    ],
-                    [
-                         60,
-                         75
-                    ]
-               ]
-          }
-     ]
+    "imageFilename": "example.jpg",
+    "height": 1169,
+    "width": 827,
+    "in_type": "classifier",
+    "out_type": "number",
+    "fields": [{
+        "name": "square_checkboxes",
+        "label": "square checkboxes",
+        "segments": [{
+            "x": 100,
+            "y": 200,
+            "segment_width": 100,
+            "segment_height": 100
+        }, {
+            "x": 200,
+            "y": 200,
+            "segment_width": 100,
+            "segment_height": 100
+        }, {
+            "x": 300,
+            "y": 200,
+            "segment_width": 100,
+            "segment_height": 100
+        }, {
+            "x": 400,
+            "y": 200,
+            "segment_width": 100,
+            "segment_height": 100
+        }, {
+            "x": 500,
+            "y": 200,
+            "segment_width": 100,
+            "segment_height": 100
+        }, {
+            "x": 600,
+            "y": 200,
+            "segment_width": 100,
+            "segment_height": 100
+        }],
+        "training_data_uri": "checkboxes",
+        "classifier_size": [
+        24, 24],
+        "bubble_locations": [
+            [
+            50, 20],
+            [
+            50, 50],
+            [
+            50, 80]
+        ]
+    }, {
+        "name": "bubbles",
+        "label": "bubbles",
+        "segment_width": 80,
+        "segment_height": 100,
+        "segments": [{
+            "x": 300,
+            "y": 900
+        }],
+        "training_data_uri": "bubbles",
+        "out_type": "select",
+        "bubble_labels": ["A", "B", "C", "D", "E", "F"],
+        "classifier_size": [
+        14, 16],
+        "bubble_locations": [
+            [
+            20, 25],
+            [
+            60, 25],
+            [
+            20, 50],
+            [
+            60, 50],
+            [
+            20, 75],
+            [
+            60, 75]
+        ]
+    }]
 }

@@ -1,6 +1,5 @@
+var templateObject;
 jQuery(function($){
-    
-    var templateObject;
 
     /////////////
     //JSON Editing
@@ -153,7 +152,7 @@ jQuery(function($){
     $("#add_field").click(function(){
         var validJSON = validate($("#json_out").val());
         if( validJSON ){
-            templateObject.fields.push(validJSON);
+            addUpdateField(validJSON);
             jcrop_api.destroy();
             initJCrop();
         }
@@ -161,6 +160,17 @@ jQuery(function($){
             alert("Invalid JSON");
         }
     });
+    
+    //Move this somewhere reasonable.
+    function addUpdateField(fieldJSON){
+        for (var i = 0; i < templateObject.fields.length; i++) {
+            if(templateObject.fields[i].name === fieldJSON.name){
+                templateObject.fields[i] = fieldJSON;
+                return;
+            }
+        }
+        templateObject.fields.push(fieldJSON);
+    }
     
 	function initJCrop(){
 
@@ -180,7 +190,7 @@ jQuery(function($){
 	}
     
     var warning = true;
-    window.onbeforeunload = function() { 
+    window.onbeforeunload = function(){ 
       if (warning) {
         return "If you navigate away from this page you will loose your unsaved changes.";
       }
@@ -188,10 +198,10 @@ jQuery(function($){
 });
 // Simple event handler, called from onChange and onSelect
 // event handlers, as per the Jcrop invocation above
-function showCoords(c)
-{   
+function showCoords(c){
     var fieldObject = 
     {
+        "name":"field",
         "label": "field",
         "segments": [
             {   
@@ -203,11 +213,10 @@ function showCoords(c)
         ]
     };
 	$("#json_out").val(JSON.stringify(fieldObject, null, 5));
-};
-function clearCoords()
-{
+}
+function clearCoords(){
 	return;
-};
+}
 function shallowCopy(obj){
 	var outObj = {};
 	$.each(obj, function(key, val) {
@@ -215,40 +224,51 @@ function shallowCopy(obj){
 	});
 	return outObj;
 }
-
+function findField(fieldName){
+    for (var i = 0; i < templateObject.fields.length; i++) {
+        if(templateObject.fields[i].name === fieldName){
+            return templateObject.fields[i];
+        }
+    }
+}
 //Form Drawing functions:
 function segmentFunction(segment, index){
-	var borderWidth = 2;
-	//safeAddNode($("#demo1"));
 
-	var segmentDiv = $('<div id="seg_' + index + '" class="' + segment.label.replace(/ /gi, "-") + '"></div>')
-			.css('position', 'absolute')
-			.css('top', segment.y - borderWidth/2 + 'px')
-			.css('left', segment.x - borderWidth/2 + 'px')
-			.css('width', segment.segment_width - borderWidth/2)
-			.css('height', segment.segment_height - borderWidth/2)
-			
-			.css('z-index', 289);
+    var fieldName = segment.name ? segment.name : segment.label.replace(/ /gi, "_");
+
+	var segmentDiv = $('<div id="seg_' + index + '"></div>')
+			.css('top', segment.y + 'px')
+			.css('left', segment.x + 'px')
+			.css('width', segment.segment_width)
+			.css('height', segment.segment_height)
+            .addClass('segment')
+            .addClass(fieldName);
             
     if(typeof segment.bounded === 'undefined' || segment.bounded){
-        segmentDiv.css('border', borderWidth + 'px solid green')
+        segmentDiv.css('outline-style', 'solid');
     }
     else{
-        segmentDiv.css('border', borderWidth + 'px dotted green')
+        segmentDiv.css('outline-style', 'dotted');
     }
-            
+    
+    segmentDiv.click(function(){
+        $('.selected').removeClass('selected');
+        $('.'+fieldName).addClass('selected');
+        
+        $("#json_out").val(JSON.stringify( findField(fieldName) , null, 5));
+    });
+    
 	segmentDiv.data('segmentObj', segment);
 	//TODO: Different borders for segments and elements
 	$(segment.bubble_locations).each(
 		function(field_idx){
-            //TODO: Use outline
 			var bubble = $('<div></div>')
 			.css('position', 'absolute')
-			.css('top', this[1] - borderWidth - segment.classifier_size[1]/2 + 'px')
-			.css('left', this[0] - borderWidth - segment.classifier_size[0]/2 + 'px')
-			.css('width', segment.classifier_size[0] - borderWidth/2)
-			.css('height', segment.classifier_size[1] - borderWidth/2)
-			.css('border', borderWidth + 'px solid blue')
+			.css('top', this[1] - segment.classifier_size[1]/2 + 'px')
+			.css('left', this[0] - segment.classifier_size[0]/2 + 'px')
+			.css('width', segment.classifier_size[0])
+			.css('height', segment.classifier_size[1])
+			.css('outline', '1px solid blue')
 			.css('z-index', 289);
             
             if(segment.training_data_uri == "bubbles"){
@@ -291,4 +311,3 @@ function validate(jsonText){
         return false;
     }
 }
-
