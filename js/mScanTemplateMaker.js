@@ -251,24 +251,33 @@ function segmentFunction(segment, index){
         segmentDiv.css('outline-style', 'dotted');
     }
     
-    segmentDiv.click(function(){
+    segmentDiv.click(function(evt){
         $('.selected').removeClass('selected');
         $('.'+fieldName).addClass('selected');
         
         $("#json_out").val(JSON.stringify( findField(fieldName) , null, 5));
+        $(this).click(function(evt){
+            var location = $(this).offset();
+            var x = evt.pageX - location.left - segment.classifier_size[0]/2,
+                y = evt.pageY - location.top - segment.classifier_size[0]/2;
+            var newItem = $('<div>').addClass('item').addClass('newItem')
+                .css("top", y).css("left", x)
+                .css('width', segment.classifier_size[0])
+                .css("height", segment.classifier_size[1]);
+            
+            $(this).append(newItem);
+        });
     });
     
 	segmentDiv.data('segmentObj', segment);
 	//TODO: Different borders for segments and elements
 	$(segment.bubble_locations).each(
 		function(field_idx){
-			var bubble = $('<div></div>')
-			.css('position', 'absolute')
+			var bubble = $('<div></div>').addClass('item')
 			.css('top', this[1] - segment.classifier_size[1]/2 + 'px')
 			.css('left', this[0] - segment.classifier_size[0]/2 + 'px')
 			.css('width', segment.classifier_size[0])
 			.css('height', segment.classifier_size[1])
-			.css('outline', '1px solid blue')
 			.css('z-index', 289);
             
             if(segment.training_data_uri == "bubbles"){
