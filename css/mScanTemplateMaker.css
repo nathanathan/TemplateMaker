@@ -33,7 +33,17 @@ label{
 }
 .bubble {
     -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
 	border-radius: 50%;
+}
+.item {
+    position: absolute;
+    outline-style: solid;
+    outline-color: blue;
+    outline-width: 1px;
+}
+.newItem {
+    outline-color: red;
 }
 textarea { width: 100%; }
 .segment{
@@ -41,6 +51,7 @@ textarea { width: 100%; }
     z-index: 389;
     outline-color: green;
     outline-width: 2px;
+    overflow:hidden;
 }
 .selected {
     outline-color: red;
