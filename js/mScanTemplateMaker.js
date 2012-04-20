@@ -112,6 +112,8 @@ jQuery(function($){
 		message.html(msg);
 	}
 
+    var ondeSession = new onde.Onde($('#data-entry-form'));
+
     ////////////////
     //Tab handling and JCrop
     ///////////////
@@ -127,6 +129,28 @@ jQuery(function($){
                 var jsonText = JSON.stringify(templateObject, null, 5);
                 $('#json_input').val(jsonText);
 			}
+            if (ui.panel.id == "jsonGUI"){
+                $.getJSON('TemplateSchema.json', 
+            	function(sampleSchema){
+                  // Render the form with the schema
+                  ondeSession.render(sampleSchema, templateObject, { collapsedCollapsibles: true });
+                  
+                  // Bind our form's submit event. We use this to get the data out from Onde
+                  $('#data-entry-form').submit(function (evt) {
+                    evt.preventDefault();
+        
+                    var outData = ondeSession.getData();
+                    
+                    if (outData.errorCount) {
+                      alert("Error");
+                    } else {
+                      console.log(JSON.stringify(outData.data, null, "  "));
+                      alert("Output is in your browser's console");
+                    }
+                    return false;
+                  });
+        	    });
+            }
 		},
         select: function(event, ui) {
             //TODO: This works because there are only two tabs.

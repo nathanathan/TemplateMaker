@@ -30,10 +30,14 @@
 
         <script src="js/jsonlint.js"></script>
 
+        <link rel="stylesheet" href="onde/src/onde.css" type="text/css"/>
+        <script type="text/javascript" src="onde/src/onde.js"></script>
     	<!-- For me -->
 		<script type="text/javascript" src="js/mScanTemplateMaker.js"></script>
         <script type="text/javascript" src="js/templateTransformer.js"></script>
         <link rel="stylesheet" href="css/mScanTemplateMaker.css" type="text/css" />
+        
+        
 	</head>
 <body>
 
@@ -43,6 +47,7 @@
         <!-- <li><a href="#imageUpload">Upload Image</a></li> -->
 		<li><a href="#jsonEditor">JSON</a></li>
 		<li><a href="#rendered">Rendered Template</a></li>
+        <li><a href="#jsonGUI">JSON GUI</a></li>
 	</ul>
 
     <div id="jsonEditor">
@@ -87,6 +92,15 @@
 		</center>
         
 	</div>
+    
+    <div id="jsonGUI">
+        <form id="data-entry-form">
+          <!-- The element where the generated form goes to. -->
+          <div class="onde-panel"></div>
+          <!-- The submit button. -->
+          <p class="actions"><button type="submit" name="submit">Give me my data</button></p>
+        </form>
+    </div>
 </div>
 
 
