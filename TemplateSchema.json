@@ -1,0 +1,142 @@
+{
+    "$schema": "http://json-schema.org/draft-03/schema",
+    "name":"Form Template",
+    "type": "object",
+    "properties": {
+        "image_filename": {
+            "description": "The filename of the form image.",
+            "type": "string"
+        },
+        "height": {
+            "description": "The form's height in pixels.",
+            "type": "number"
+        },
+        "width": {
+            "description": "The form's width in pixels.",
+            "type": "number"
+        },
+        "fields": {
+            "type": "array",
+            "items": [
+                {
+                    "name":"Field",
+                    "type": "object",
+                    "properties": {
+                        "items": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                 "properties": {
+                                    "item_x": {
+                                        "required": true,
+                                        "type": "number"
+                                    },
+                                    "item_y": {
+                                        "required": true,
+                                        "type": "number"
+                                    },
+                                    "label": {
+                                        "type": "string"
+                                    },
+                                    "value": {
+                                        "description": "Required if the field type is select.",
+                                        "type": "any"
+                                    }
+                                 }
+                            }
+                        },
+                        "classifier" : {
+                                "type": "object",
+                                "required": false,
+                                "properties": {
+                                    "classifier_height": {
+                                        "required": true,
+                                        "type": "integer"
+                                    },
+                                    "classifier_width": {
+                                        "required": true,
+                                        "type": "integer"
+                                    },
+                                    "training_data_uri": {
+                                        "required": true,
+                                        "default": "bubbles",
+                                        "type": "string"
+                                    },
+                                    "classification_map": {
+                                        "type": "object",
+                                        "required": true,
+                                        "additionalProperties": true,
+                                        "default": {
+                                            "empty":false
+                                        },
+                                        "test":1
+                                    },
+                                    "default_classification": 
+                                    {
+                                        "required": true,
+                                        "type": "any",
+                                        "default": true
+                                    },
+                                    "alignment_radius": 
+                                    {
+                                        "description": "If specified a hill climbing search will be done to align the classified items.",
+                                        "default": 0,
+                                        "required": false,
+                                        "type": "number"
+                                    }
+                                }
+                        },
+                        "label": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "required": true,
+                            "description": "A unique name used to identify this field. Must follow xml naming conventions.",
+                            "type": "string"
+                        },
+                        "type": {
+                            "default": "input",
+                            "enum": ["input", "select", "select1"],
+                            "required": true,
+                            "description": "Correponds with xform body element types.",
+                            "type": "string"
+                        },
+                        "segments": {
+                            "name": "Segment",
+                            "description": "Segments are used to specify rectangualr areas of the form that a fields are bounded to.",
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "segment_height": {
+                                        "required": true,
+                                        "type": "number"
+                                    },
+                                    "segment_width": {
+                                        "required": true,
+                                        "type": "number"
+                                    },
+                                    "segment_x": {
+                                        "required": true,
+                                        "type": "number"
+                                    },
+                                    "segment_y": {
+                                        "required": true,
+                                        "type": "number"
+                                    },
+                                    "align_segment": 
+                                    {
+                                        "description": "If this segment has a bounding rectagle it can be used for additional alignment if this is true. For flat images this isn't necessairy.",
+                                        "default": false,
+                                        "required": false,
+                                        "type": "boolean"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
