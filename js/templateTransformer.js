@@ -1,5 +1,4 @@
 function transformFunction(){
-
     var scale_x = parseFloat($('.scale_x').val());
     var scale_y = parseFloat($('.scale_y').val());
     var offset_x =parseFloat($('.offset_x').val());
@@ -36,9 +35,96 @@ function transformFunction(){
 
         
     var jsonText = $('#json_input').val();
-    var validJSON = validate(jsonText);
+    var validJSON = jsonlint.parse(jsonText);
     if( validJSON ){
         $('#json_input').val(JSON.stringify(transformObject(validJSON), null, 5));
     }
 }
 
+function convertToNewSchema(){
+
+    var allowedProperties = [
+        "name",
+        "label",
+        "height",
+        "width",
+        "segment_height",
+        "segment_width",
+        "fields",
+        "segments"];
+
+    function initClassifierObject(obj){
+        if(typeof obj["classifier"] !== 'object'){
+            obj["classifier"] = { "classification_map" : { "empty" : false },
+                                    "default_classification": true
+            };
+        }
+        return obj;
+    }
+
+    function convertObject(obj){
+        if(typeof obj !== 'object'){
+                return obj;
+        }
+        else if( obj instanceof Array ){
+            var new_obj = [];
+            for (var key in obj){
+                new_obj[key] = convertObject(obj[key]);
+            }
+            return new_obj;
+        }
+        else{
+            var new_obj = {};
+            for (var key in obj){
+                if(key === "x"){
+                    new_obj["segment_x"] = obj["x"];
+                } else if(key === "y"){
+                    new_obj["segment_y"] = obj["y"];
+                } else if(key === "label"){
+                    new_obj["label"] = obj["label"];
+                    if( typeof obj["name"] === 'undefined' ){
+                        //TODO: Try adding xmltag validation to schema.
+                        new_obj["name"] = obj["label"].replace(/ /gi, "_");
+                    }
+                } else if(key === "bubble_locations"){
+                    new_obj["items"] = [];
+                    for (var i = 0; i < obj["bubble_locations"].length; i++){
+                        new_obj["items"][i] = {
+                            "item_x": obj["bubble_locations"][i][0],
+                            "item_y": obj["bubble_locations"][i][1],
+                            };
+                        var labels = obj["bubble_labels"];
+                        if(typeof labels !== 'undefined'){
+                            new_obj["items"][i]["label"] = labels[i];
+                            new_obj["items"][i]["value"] = labels[i].replace(/ /gi, "_");
+                        }
+                    }
+                } else if(key === "classifier_size"){
+                    initClassifierObject(new_obj);
+                    new_obj["classifier"]["classifier_height"] = obj["classifier_size"][0];
+                    new_obj["classifier"]["classifier_width"] = obj["classifier_size"][1];
+                } else if(key === "training_data_uri"){
+                    initClassifierObject(new_obj);
+                    new_obj["classifier"]["training_data_uri"] = obj["training_data_uri"];
+                } else if(key === "bounded"){
+                    new_obj["align_segment"] = obj[key];
+                } else if(key === "out_type"){
+                    new_obj["type"] = obj[key];
+                } else if($.inArray(key, allowedProperties) >= 0){
+                    new_obj[key] = convertObject(obj[key]);
+                }
+            }
+            
+            if(typeof new_obj["type"] === 'undefined'){
+                new_obj["type"] = "input"
+            }
+            return new_obj;
+        }
+    }
+    var jsonText = $('#json_input').val();
+    var validJSON = jsonlint.parse(jsonText);
+    if( validJSON ){
+        $('#json_input').val(JSON.stringify(convertObject(validJSON), null, 5));
+        alert("done");
+    }
+}

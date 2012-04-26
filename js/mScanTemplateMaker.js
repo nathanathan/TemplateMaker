@@ -132,23 +132,24 @@ jQuery(function($){
             if (ui.panel.id == "jsonGUI"){
                 $.getJSON('TemplateSchema.json', 
             	function(sampleSchema){
-                  // Render the form with the schema
-                  ondeSession.render(sampleSchema, templateObject, { collapsedCollapsibles: true });
-                  
-                  // Bind our form's submit event. We use this to get the data out from Onde
-                  $('#data-entry-form').submit(function (evt) {
+                    console.log(templateObject);
+                    // Render the form with the schema
+                    ondeSession.render(sampleSchema, templateObject, { collapsedCollapsibles: true });
+                    
+                    // Bind our form's submit event. We use this to get the data out from Onde
+                    $('#data-entry-form').submit(function (evt) {
                     evt.preventDefault();
-        
+                    
                     var outData = ondeSession.getData();
                     
                     if (outData.errorCount) {
-                      alert("Error");
-                    } else {
-                      console.log(JSON.stringify(outData.data, null, "  "));
-                      alert("Output is in your browser's console");
-                    }
-                    return false;
-                  });
+                          alert("Error");
+                        } else {
+                          console.log(JSON.stringify(outData.data, null, "  "));
+                          alert("Output is in your browser's console");
+                        }
+                        return false;
+                    });
         	    });
             }
 		},
@@ -258,7 +259,7 @@ function findField(fieldName){
 //Form Drawing functions:
 function segmentFunction(segment, index){
 
-    var fieldName = segment.name ? segment.name : segment.label.replace(/ /gi, "_");
+    var fieldName = segment.name;
 
 	var segmentDiv = $('<div id="seg_' + index + '"></div>')
 			.css('top', segment.y + 'px')

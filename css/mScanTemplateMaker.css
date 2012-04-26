@@ -4,6 +4,7 @@
 	top:150px;
     z-index: 399;
 }
+/*
 .tips{
     position:fixed;
 	right:0;
@@ -15,6 +16,7 @@
     background-color: #FFF;
     border: 1px solid black;
 }
+*/
 label{
 	display: block;
 }

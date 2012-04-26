@@ -48,6 +48,7 @@
 		<li><a href="#jsonEditor">JSON</a></li>
 		<li><a href="#rendered">Rendered Template</a></li>
         <li><a href="#jsonGUI">JSON GUI</a></li>
+        <li><a href="#tips">Tips</a></li>
 	</ul>
 
     <div id="jsonEditor">
@@ -63,27 +64,21 @@
         <label>Scale y:</label>
         <input style="display:block;" class="scale_y" value=1></input>
         <button id="transform" onclick='transformFunction()'>Transform</button>
+        <button id="convert" onclick='convertToNewSchema()'>Convert To New Schema</button>
 	</div>
 
 	<div id="rendered">
 
 		<center>
     		<div id="coords" class="coords">
+                <!-- 
                 <input style="display:block;" type="checkbox" name="align_segment">Align Segment Using Bounding Box.</input>
                 <input style="display:block;" type="checkbox" name="has_items">Bubble/Checkbox Segment</input>
-                <textarea style="display:block;" id="json_out" rows="40" cols="30"></textarea>
-                <button style="display:block;" id="add_field">Add/Upate Field</button>
+                -->
+                <textarea style="display:block;" id="json_out" rows="30" cols="30"></textarea>
+                <button style="display:block;" id="add_field">Update Field</button>
 			</div>
-            <div class="tips">
-                <p>Tips:</p>
-                <ul>
-                    <li>To change the form image drag and drop the new image over the current image.</li>
-                    <li>Segments should cover only the fillable areas of the form.</li>
-                    <li>Leave about a pixel of whitespace padding around every bubble/checkbox.</li>
-                    <li>If your form is too big to fit on your screen try using your browser's zoom function. (Pressing Ctrl and plus/minus is what does it for me.)</li>
-                    <li>If your form has a landscape orientation we don't yet support it</li>
-                </ul>
-            </div>
+
 			<!-- This is the image we're attaching Jcrop to -->
 			<div id="dropbox">
 			<img src="example.jpg" id="target" class="target" alt="form" />
@@ -98,8 +93,18 @@
           <!-- The element where the generated form goes to. -->
           <div class="onde-panel"></div>
           <!-- The submit button. -->
-          <p class="actions"><button type="submit" name="submit">Give me my data</button></p>
+          <p class="actions"><button type="submit" name="submit">Debug</button></p>
         </form>
+    </div>
+    <div id="tips">
+        <h1>Tips:</h1>
+        <ul>
+            <li>To change the form image drag and drop the new image over the current image.</li>
+            <li>Segments should cover only the fillable areas of the form.</li>
+            <li>Leave about a pixel of whitespace padding around every bubble/checkbox.</li>
+            <li>If your form is too big to fit on your screen try using your browser's zoom function. (Pressing Ctrl and plus/minus is what does it for me.)</li>
+            <li>If your form has a landscape orientation we don't yet support it.</li>
+        </ul>
     </div>
 </div>
 
