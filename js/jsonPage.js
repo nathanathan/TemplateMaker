@@ -1,3 +1,20 @@
+jQuery(function($){
+    $("#save").click(function(){
+    	var uriContent = "data:application/octet-stream," + encodeURIComponent($('#json_input').val());
+		//newWindow=window.open(uriContent, 'generated.json');
+		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
+	});
+
+	$.getJSON('example.json', 
+		function(form){
+            //TODO: Load JSON as text.
+            templateObject = form;
+            var jsonText = JSON.stringify(templateObject, null, 5);
+            validate(jsonText);
+            $('#json_input').first().val(jsonText);
+	});
+});
+
 function transformFunction(){
     var scale_x = parseFloat($('.scale_x').val());
     var scale_y = parseFloat($('.scale_y').val());
@@ -32,7 +49,6 @@ function transformFunction(){
         }
         return obj;
     }
-
         
     var jsonText = $('#json_input').val();
     var validJSON = jsonlint.parse(jsonText);
@@ -114,10 +130,11 @@ function convertToNewSchema(){
                     new_obj[key] = convertObject(obj[key]);
                 }
             }
-            
+            /*
             if(typeof new_obj["type"] === 'undefined'){
                 new_obj["type"] = "input"
             }
+            */
             return new_obj;
         }
     }

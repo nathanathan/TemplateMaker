@@ -1,117 +1,6 @@
 var templateObject;
 jQuery(function($){
 
-    /////////////
-    //JSON Editing
-    ////////////
-
-	$("#save").click(function(){
-		var uriContent = "data:application/octet-stream," + encodeURIComponent($('#json_input').val());
-		//newWindow=window.open(uriContent, 'generated.json');
-		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
-	});
-
-	$.getJSON('example.json', 
-		function(form){
-            //TODO: Load JSON as text.
-            templateObject = form;
-            var jsonText = JSON.stringify(templateObject, null, 5);
-            validate(jsonText);
-            $('#json_input').first().val(jsonText);
-	});
-
-
-    /////////////
-    //Image Uploader
-    ////////////
-
-	var dropbox = $('#dropbox'),
-		message = $('.message', dropbox);
-	
-	dropbox.filedrop({
-		// The name of the $_FILES entry:
-		paramname:'pic',
-		
-		maxfiles: 1,
-        
-        maxfilesize: 22,
-		
-		error: function(err, file) {
-			switch(err) {
-				case 'BrowserNotSupported':
-					showMessage('Your browser does not support HTML5 file uploads!');
-					break;
-				case 'TooManyFiles':
-					alert('Too many files! Please select 5 at most! (configurable)');
-					break;
-				case 'FileTooLarge':
-					alert(file.name+' is too large! Please upload files up to 2mb (configurable).');
-					break;
-				default:
-					break;
-			}
-		},
-		
-		// Called before each upload is started
-		beforeEach: function(file){
-			if(!file.type.match(/^image\//)){
-				alert('Only images are allowed!');
-				
-				// Returning false will cause the
-				// file to be rejected
-				return false;
-			}
-		},
-
-		uploadStarted:function(i, file, len){
-			createImage(file);
-		}
-
-	});
-	
-
-	function createImage(file){
-
-		var reader = new FileReader();
-		reader.onload = function(e){
-			// e.target.result holds the DataURL which
-			// can be used as a source of the image:
-			
-			$(".target").attr('src',e.target.result);
-			$(".target").css("width", "auto");
-			$(".target").css("height", "auto");
-            var loaded = false;
-            $(".target").load(function(){
-                if(loaded){
-                    return;
-                }
-                templateObject.imageFilename = file.name;
-                templateObject.width = parseInt($(".target").css("width"));
-                templateObject.height = parseInt($(".target").css("height"));
-                loaded = true;
-            });
-		};
-		
-		// Reading the file as a DataURL. When finished,
-		// this will trigger the onload function above:
-		reader.readAsDataURL(file);
-		
-		message.hide();
-		//preview.appendTo(dropbox);
-		
-		// Associating a preview container
-		// with the file, using jQuery's $.data():
-		
-		//$.data(file,preview);
-
-		jcrop_api.destroy();
-		initJCrop();
-	}
-
-	function showMessage(msg){
-		message.html(msg);
-	}
-
     var ondeSession = new onde.Onde($('#data-entry-form'));
 
     ////////////////
@@ -201,6 +90,36 @@ jQuery(function($){
 
 		if(templateObject === null) return;
 
+        function showCoords(c){
+            var fieldObject = 
+            {
+                "name":"field",
+                "label": "field",
+                "segments": [
+                    {   
+                        "segment_x": c.x,
+                        "segment_y": c.y,
+                        "segment_width": c.w,
+                        "segment_height":c.h
+                    }
+                ],
+                "items":[],
+                "classifier": {
+                    "classification_map": {
+                        "empty": false
+                    },
+                    "default_classification": true,
+                    "training_data_uri": "bubbles",
+                    "classifier_height": 18,
+                    "classifier_width": 14
+                }
+            };
+            $("#json_out").val(JSON.stringify(fieldObject, null, 5));
+        }
+        function clearCoords(){
+            return;
+        }
+
 		//Initialize jcrop
 		$('.target').Jcrop({
 			onChange:   showCoords,
@@ -221,27 +140,6 @@ jQuery(function($){
       }
     };
 });
-// Simple event handler, called from onChange and onSelect
-// event handlers, as per the Jcrop invocation above
-function showCoords(c){
-    var fieldObject = 
-    {
-        "name":"field",
-        "label": "field",
-        "segments": [
-            {   
-                "x": c.x,
-                "y": c.y,
-                "segment_width": c.w,
-                "segment_height":c.h
-            }
-        ]
-    };
-	$("#json_out").val(JSON.stringify(fieldObject, null, 5));
-}
-function clearCoords(){
-	return;
-}
 function shallowCopy(obj){
 	var outObj = {};
 	$.each(obj, function(key, val) {
@@ -262,14 +160,14 @@ function segmentFunction(segment, index){
     var fieldName = segment.name;
 
 	var segmentDiv = $('<div id="seg_' + index + '"></div>')
-			.css('top', segment.y + 'px')
-			.css('left', segment.x + 'px')
+			.css('top', segment.segment_y + 'px')
+			.css('left', segment.segment_x + 'px')
 			.css('width', segment.segment_width)
 			.css('height', segment.segment_height)
             .addClass('segment')
             .addClass(fieldName);
             
-    if(typeof segment.bounded === 'undefined' || segment.bounded){
+    if(typeof segment.align_segment === 'undefined' || segment.align_segment){
         segmentDiv.css('outline-style', 'solid');
     }
     else{
@@ -283,12 +181,12 @@ function segmentFunction(segment, index){
         $("#json_out").val(JSON.stringify( findField(fieldName) , null, 5));
         $(this).click(function(evt){
             var location = $(this).offset();
-            var x = evt.pageX - location.left - segment.classifier_size[0]/2,
-                y = evt.pageY - location.top - segment.classifier_size[0]/2;
+            var x = evt.pageX - location.left - segment.classifier.classifier_width/2,
+                y = evt.pageY - location.top - segment.classifier.classifier_height/2;
             var newItem = $('<div>').addClass('item').addClass('newItem')
                 .css("top", y).css("left", x)
-                .css('width', segment.classifier_size[0])
-                .css("height", segment.classifier_size[1]);
+                .css('width', segment.classifier.classifier_width)
+                .css("height", segment.classifier.classifier_height);
             
             $(this).append(newItem);
         });
@@ -296,13 +194,13 @@ function segmentFunction(segment, index){
     
 	segmentDiv.data('segmentObj', segment);
 	//TODO: Different borders for segments and elements
-	$(segment.bubble_locations).each(
+	$(segment.items).each(
 		function(field_idx){
 			var bubble = $('<div></div>').addClass('item')
-			.css('top', this[1] - segment.classifier_size[1]/2 + 'px')
-			.css('left', this[0] - segment.classifier_size[0]/2 + 'px')
-			.css('width', segment.classifier_size[0])
-			.css('height', segment.classifier_size[1])
+			.css('top', this.item_y - segment.classifier.classifier_height/2 + 'px')
+			.css('left', this.item_x - segment.classifier.classifier_width/2 + 'px')
+			.css('width', segment.classifier.classifier_width)
+			.css('height', segment.classifier.classifier_height)
 			.css('z-index', 289);
             
             if(segment.training_data_uri == "bubbles"){
@@ -327,6 +225,9 @@ function formFunction(form){
 		}
 	);
 }
+//TODO: Use popups instead?
+//TODO: Use JSV
+//Use Codemirror?
 function validate(jsonText){
     try {
         var reformat = false;
