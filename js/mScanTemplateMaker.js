@@ -2,9 +2,23 @@ var templateObject;
 jQuery(function($){
 
     var ondeSession = new onde.Onde($('#data-entry-form'));
-
+    // Bind our form's submit event. We use this to get the data out from Onde
+    $('#data-entry-form').submit(function (evt) {
+        evt.preventDefault();
+        
+        var outData = ondeSession.getData();
+        
+        if (outData.errorCount) {
+              alert("Error");
+        } else {
+              console.log(JSON.stringify(outData.data, null, "  "));
+              alert("Output is in your browser's console");
+        }
+        return false;
+    });
+    
     ////////////////
-    //Tab handling and JCrop
+    //Tab handling
     ///////////////
 	var jcrop_api;
 	//Initialize jquery ui tabs
@@ -21,36 +35,24 @@ jQuery(function($){
             if (ui.panel.id == "jsonGUI"){
                 $.getJSON('TemplateSchema.json', 
             	function(sampleSchema){
-                    console.log(templateObject);
                     // Render the form with the schema
-                    ondeSession.render(sampleSchema, templateObject, { collapsedCollapsibles: true });
-                    
-                    // Bind our form's submit event. We use this to get the data out from Onde
-                    $('#data-entry-form').submit(function (evt) {
-                    evt.preventDefault();
-                    
-                    var outData = ondeSession.getData();
-                    
-                    if (outData.errorCount) {
-                          alert("Error");
-                        } else {
-                          console.log(JSON.stringify(outData.data, null, "  "));
-                          alert("Output is in your browser's console");
-                        }
-                        return false;
-                    });
+                    ondeSession.render(sampleSchema,
+                        templateObject,
+                        {}
+                        //{ collapsedCollapsibles: true }
+                        );
         	    });
             }
 		},
         select: function(event, ui) {
-            //TODO: This works because there are only two tabs.
-            //Decide what to do based on which tab I'm on rather than which is selected.
-            if (ui.panel.id != "rendered") {
+            var currentTabId = $('#tabs .ui-tabs-panel:not(.ui-tabs-hide)').attr('id');
+            
+            if (currentTabId === "rendered") {
                 if(jcrop_api){
                     jcrop_api.destroy();
                 }
             }
-            if (ui.panel.id != "jsonEditor") {
+            else if (currentTabId === "jsonEditor") {
                 var jsonText = $('#json_input').val();
                 var validJSON = validate(jsonText);
                 if( validJSON ){
@@ -61,8 +63,17 @@ jQuery(function($){
                     return false;
                 }
             }
+            else if (currentTabId === "jsonGUI") {
+                var outData = ondeSession.getData();
+                if (outData.errorCount) {
+                    console.error(outData);
+                } else {
+                      templateObject = outData.data;
+                }
+            }
         }
 	});
+    
     $("#add_field").click(function(){
         var validJSON = validate($("#json_out").val());
         if( validJSON ){
