@@ -32,12 +32,15 @@
 
         <link rel="stylesheet" href="onde/src/onde.css" type="text/css"/>
         <script type="text/javascript" src="onde/src/onde.js"></script>
+        
+        <!-- Ace -->
+        <script src="ace/build/src/ace-uncompressed-noconflict.js" type="text/javascript" charset="utf-8"></script>
+        
     	<!-- For me -->
 		<script type="text/javascript" src="js/mScanTemplateMaker.js"></script>
         <script type="text/javascript" src="js/jsonPage.js"></script>
         <script type="text/javascript" src="js/imageUpload.js"></script>
         <link rel="stylesheet" href="css/mScanTemplateMaker.css" type="text/css" />
-        
         
 	</head>
 <body>
@@ -50,11 +53,19 @@
 		<li><a href="#rendered">Rendered Template</a></li>
         <li><a href="#jsonGUI">JSON GUI</a></li>
         <li><a href="#tips">Tips</a></li>
+        <li><a href="#acknowledgements">Developer info</a></li>
 	</ul>
 
     <div id="jsonEditor">
+    <div id="editor">
+{
+    "a":1,
+    "b":2,
+    "c":3
+}
+    </div>
         <pre id="result"></pre>
-        <textarea id="json_input" rows="50" cols="50"></textarea>
+        <!--<textarea id="json_input" rows="50" cols="50"></textarea>-->
         <button id="save">Save</button>
         <label>Offset x:</label>
         <input style="display:inline;" class="offset_x" value=0></input>
@@ -107,27 +118,15 @@
             <li>If your form has a landscape orientation we don't yet support it.</li>
         </ul>
     </div>
+    <div id="acknowledgements">
+        <div id="dl_links">
+            <a href="http://deepliquid.com/content/Jcrop_Manual.html">mScan</a>
+            <a href="http://deepliquid.com/content/Jcrop.html">Template Editor Source</a>
+            <a href="http://deepliquid.com/content/Jcrop.html">Jcrop Home</a>
+        	<a href="http://deepliquid.com/content/Jcrop_Manual.html">Manual (Docs)</a>
+        </div>
+    </div>
 </div>
 
-
-<!-- Acknowledgements -->
-<div id="outer">
-<div class="jcExample">
-<div class="article">
-
-
-<div id="dl_links">
-    <a href="http://deepliquid.com/content/Jcrop_Manual.html">mScan</a>
-    <a href="http://deepliquid.com/content/Jcrop.html">Template Editor Source</a> |
-</div>
-
-<div id="dl_links">
-	<a href="http://deepliquid.com/content/Jcrop.html">Jcrop Home</a> |
-	<a href="http://deepliquid.com/content/Jcrop_Manual.html">Manual (Docs)</a>
-</div>
-
-</div>
-</div>
-</div>
 </body>
 </html>

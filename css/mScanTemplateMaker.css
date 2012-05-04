@@ -58,3 +58,10 @@ textarea { width: 100%; }
 .selected {
     outline-color: red;
 }
+#editor { 
+    overflow: hidden;
+    position: relative;
+    display: block;
+    height: 60em;
+    width: 100%;
+}

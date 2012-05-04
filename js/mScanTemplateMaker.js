@@ -1,6 +1,27 @@
 var templateObject;
+var editor;
 jQuery(function($){
+    ////////////////
+    //Initialization:
+    ///////////////
+    editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/json");
+    $("#save").click(function(){
+        var uriContent = "data:application/octet-stream," + encodeURIComponent(editor.getSession().getValue());
+		//newWindow=window.open(uriContent, 'generated.json');
+		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
+	});
 
+	$.getJSON('example.json', 
+		function(form){
+            //TODO: Load JSON as text.
+            templateObject = form;
+            var jsonText = JSON.stringify(templateObject, null, 5);
+            validate(jsonText);
+            editor.getSession().setValue(jsonText);
+	});
+    
     var ondeSession = new onde.Onde($('#data-entry-form'));
     // Bind our form's submit event. We use this to get the data out from Onde
     $('#data-entry-form').submit(function (evt) {
@@ -30,7 +51,8 @@ jQuery(function($){
 			if (ui.panel.id == "jsonEditor") {
 				//Add the json template to the text area
                 var jsonText = JSON.stringify(templateObject, null, 5);
-                $('#json_input').val(jsonText);
+                editor.getSession().setValue(jsonText);
+                //$('#json_input').val(jsonText);
 			}
             if (ui.panel.id == "jsonGUI"){
                 $.getJSON('TemplateSchema.json', 
@@ -53,7 +75,8 @@ jQuery(function($){
                 }
             }
             else if (currentTabId === "jsonEditor") {
-                var jsonText = $('#json_input').val();
+                //var jsonText = $('#json_input').val();
+                var jsonText = editor.getSession().getValue(jsonText);
                 var validJSON = validate(jsonText);
                 if( validJSON ){
                     templateObject = validJSON;

@@ -1,20 +1,3 @@
-jQuery(function($){
-    $("#save").click(function(){
-    	var uriContent = "data:application/octet-stream," + encodeURIComponent($('#json_input').val());
-		//newWindow=window.open(uriContent, 'generated.json');
-		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
-	});
-
-	$.getJSON('example.json', 
-		function(form){
-            //TODO: Load JSON as text.
-            templateObject = form;
-            var jsonText = JSON.stringify(templateObject, null, 5);
-            validate(jsonText);
-            $('#json_input').first().val(jsonText);
-	});
-});
-
 function transformFunction(){
     var scale_x = parseFloat($('.scale_x').val());
     var scale_y = parseFloat($('.scale_y').val());
@@ -50,10 +33,11 @@ function transformFunction(){
         return obj;
     }
         
-    var jsonText = $('#json_input').val();
+    var jsonText = editor.getSession().getValue();
     var validJSON = jsonlint.parse(jsonText);
     if( validJSON ){
-        $('#json_input').val(JSON.stringify(transformObject(validJSON), null, 5));
+        editor.getSession().setValue(JSON.stringify(transformObject(validJSON), null, 5));
+        alert("done");
     }
 }
 
@@ -138,10 +122,10 @@ function convertToNewSchema(){
             return new_obj;
         }
     }
-    var jsonText = $('#json_input').val();
+    var jsonText = editor.getSession().getValue();
     var validJSON = jsonlint.parse(jsonText);
     if( validJSON ){
-        $('#json_input').val(JSON.stringify(convertObject(validJSON), null, 5));
+        editor.getSession().setValue(JSON.stringify(convertObject(validJSON), null, 5));
         alert("done");
     }
 }
