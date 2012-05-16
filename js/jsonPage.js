@@ -9,17 +9,15 @@ function transformFunction(){
             return transformObject(value);
         } else if(key === "fields" || key === "segments"){
             return transformObject(value);
-        } else if(key === "segment_width"){
-            return Math.round(value * scale_x);
-        } else if(key === "segment_height"){
-            return Math.round(value * scale_y);
-        } else if(key === "x"){
+        } else if(key === "segment_x"){
             return Math.round(value * scale_x + offset_x);
-        } else if(key === "y"){
+        } else if(key === "segment_y"){
             return Math.round(value * scale_y + offset_y);
-        } else if(key === "0"){
+        } else if(key.indexOf("_width") != -1 ||
+                  key.indexOf("_x") != -1){
             return Math.round(value * scale_x);
-        } else if(key === "1"){
+        } else if(key.indexOf("_height") != -1 ||
+                  key.indexOf("_y") != -1){
             return Math.round(value * scale_y);
         } else{
             return value;
@@ -46,6 +44,7 @@ function convertToNewSchema(){
     var allowedProperties = [
         "name",
         "label",
+        "imageFilename",
         "height",
         "width",
         "segment_height",

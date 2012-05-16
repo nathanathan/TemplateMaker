@@ -5,7 +5,7 @@ jQuery(function($){
     //Initialization:
     ///////////////
     editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
+    editor.setTheme("ace/theme/solarized_light");
     editor.getSession().setMode("ace/mode/json");
     $("#save").click(function(){
         var uriContent = "data:application/octet-stream," + encodeURIComponent(editor.getSession().getValue());
@@ -13,7 +13,7 @@ jQuery(function($){
 		$("body").append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
 	});
 
-	$.getJSON('example.json', 
+	$.getJSON(getParameter("templateJson", "example.json"), 
 		function(form){
             //TODO: Load JSON as text.
             templateObject = form;
@@ -21,6 +21,7 @@ jQuery(function($){
             validate(jsonText);
             editor.getSession().setValue(jsonText);
 	});
+    $('.target').attr("src", getParameter("imageFilename", "example.jpg"));
     
     var ondeSession = new onde.Onde($('#data-entry-form'));
     // Bind our form's submit event. We use this to get the data out from Onde
@@ -37,7 +38,6 @@ jQuery(function($){
         }
         return false;
     });
-    
     ////////////////
     //Tab handling
     ///////////////
@@ -55,15 +55,14 @@ jQuery(function($){
                 //$('#json_input').val(jsonText);
 			}
             if (ui.panel.id == "jsonGUI"){
-                $.getJSON('TemplateSchema.json', 
-            	function(sampleSchema){
+                $.getJSON('TemplateSchema.json', function(sampleSchema){
                     // Render the form with the schema
                     ondeSession.render(sampleSchema,
-                        templateObject,
-                        {}
-                        //{ collapsedCollapsibles: true }
-                        );
-        	    });
+                                       templateObject,
+                                       //{}
+                                       { collapsedCollapsibles: true }
+                                       );
+                });
             }
 		},
         select: function(event, ui) {
@@ -153,7 +152,6 @@ jQuery(function($){
         function clearCoords(){
             return;
         }
-
 		//Initialize jcrop
 		$('.target').Jcrop({
 			onChange:   showCoords,
@@ -166,7 +164,6 @@ jQuery(function($){
             formFunction(templateObject);
 		});	
 	}
-    
     var warning = true;
     window.onbeforeunload = function(){ 
       if (warning) {
@@ -259,9 +256,7 @@ function formFunction(form){
 		}
 	);
 }
-//TODO: Use popups instead?
 //TODO: Use JSV
-//Use Codemirror?
 function validate(jsonText){
     try {
         var reformat = false;
@@ -279,4 +274,17 @@ function validate(jsonText){
         document.getElementById("result").className = "fail";
         return false;
     }
+}
+//src: http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
+function getParameter(paramName, defaultValue) {
+    var searchString = window.location.search.substring(1);
+    var params = searchString.split('&');
+    
+    for (var i=0;i<params.length;i++) {
+        var val = params[i].split('=');
+        if (val[0] === paramName) {
+            return decodeURI(val[1]);
+        }
+    }
+    return defaultValue;
 }

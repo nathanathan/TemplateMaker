@@ -42,38 +42,39 @@ jQuery(function($){
 
 	});
 	
-
+    var imageLoaded = false;
+    $(".target").load(function(){
+        if(imageLoaded){
+            return;
+        }
+        imageLoaded = true;
+        //Scale the target image so it has the desired width
+        var desired_width = 832;
+        var width = parseInt($(".target").css("width"), 0);
+        var height = parseInt($(".target").css("height"), 0);
+        height = Math.round(desired_width/width * height);
+        width = desired_width;
+        $(".target").css("width", width);
+        $(".target").css("height", height);
+        templateObject.height = height;
+        templateObject.width = width;
+        jcrop_api.destroy();
+        initJCrop();
+    });
+    
 	function createImage(file){
 
 		var reader = new FileReader();
 		reader.onload = function(e){
-			// e.target.result holds the DataURL which
-			// can be used as a source of the image:
-			
-			$(".target").attr('src',e.target.result);
+            templateObject.imageFilename = file.name;
+			imageLoaded = false;
 			$(".target").css("width", "auto");
 			$(".target").css("height", "auto");
-            var loaded = false;
-            $(".target").load(function(){
-                if(loaded){
-                    return;
-                }
-                loaded = true;
-                templateObject.imageFilename = file.name;
-                var width = parseInt($(".target").css("width"));
-                var height = parseInt($(".target").css("height"));
-                
-                //Scale the image
-                height = 832/width * height;
-                width = 832;
-                $(".target").css("width", width);
-                $(".target").css("height", height);
-                
-                jcrop_api.destroy();
-                initJCrop();
-            });
+    		// e.target.result holds the DataURL which
+			// can be used as a source of the image:
+            $(".target").attr('src',e.target.result);
 		};
-		
+        
 		// Reading the file as a DataURL. When finished,
 		// this will trigger the onload function above:
 		reader.readAsDataURL(file);
