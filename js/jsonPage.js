@@ -100,8 +100,8 @@ function convertToNewSchema(){
                     }
                 } else if(key === "classifier_size"){
                     initClassifierObject(new_obj);
-                    new_obj["classifier"]["classifier_height"] = obj["classifier_size"][0];
-                    new_obj["classifier"]["classifier_width"] = obj["classifier_size"][1];
+                    new_obj["classifier"]["classifier_height"] = obj["classifier_size"][1];
+                    new_obj["classifier"]["classifier_width"] = obj["classifier_size"][0];
                 } else if(key === "training_data_uri"){
                     initClassifierObject(new_obj);
                     new_obj["classifier"]["training_data_uri"] = obj["training_data_uri"];

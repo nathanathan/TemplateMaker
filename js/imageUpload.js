@@ -66,7 +66,7 @@ jQuery(function($){
 
 		var reader = new FileReader();
 		reader.onload = function(e){
-            templateObject.imageFilename = file.name;
+            templateObject.image_filename = file.name;
 			imageLoaded = false;
 			$(".target").css("width", "auto");
 			$(".target").css("height", "auto");
