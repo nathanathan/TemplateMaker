@@ -1,0 +1,6 @@
+[submodule "ace"]
+	path = ace
+	url = git://github.com/ajaxorg/ace.git
+[submodule "onde"]
+	path = onde
+	url = git://github.com/nathanathan/onde.git
