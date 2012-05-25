@@ -7,6 +7,9 @@
 .validation-message {
     padding: 1em;
 }
+.hidden {
+    display: none;
+}
 .pass {
     background-color: #efe;
     color: #393;

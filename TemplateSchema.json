@@ -5,14 +5,17 @@
     "properties": {
         "image_filename": {
             "description": "The filename of the form image.",
+            "display": "hidden",
             "type": "string"
         },
         "height": {
             "description": "The form's height in pixels.",
+            "display": "hidden",
             "type": "number"
         },
         "width": {
             "description": "The form's width in pixels.",
+            "display": "hidden",
             "type": "number"
         },
         "fields": {
@@ -77,6 +80,7 @@
                             },
                             "advanced": {
                                 "description": "Advanced classifier properties.",
+                                "display": "hidden",
                                 "type": "object",
                                 "required": false,
                                 "properties":{

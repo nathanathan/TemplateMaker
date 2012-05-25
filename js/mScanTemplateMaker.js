@@ -1,4 +1,5 @@
 var templateObject;
+var templateSchema;
 var editor;
 var jcrop_api;
 
@@ -130,6 +131,19 @@ function formFunction(form){
 		}
 	);
 }
+function applyInheritance(object, arrayNames){
+    var outputArray = [];
+    var arrayName = arrayNames[0];
+    $(object[arrayName]).each(
+		function(i){
+			outputArray[i] = applyInheritance($.extend($.extend({}, object), this),
+                                              arrayNames.slice(1, arrayNames.length));
+		}
+	);
+    var objectCopy = $.extend({}, object);
+    objectCopy[arrayName] = outputArray;
+    return objectCopy;
+}
 function showCoords(c){
     var fieldObject = 
     {
@@ -216,7 +230,7 @@ $('#save').click(function(){
     var uriContent = "data:application/octet-stream," + encodeURIComponent(editor.getSession().getValue());
     $('body').append("<iframe src='" + uriContent + "' style='display: none;' ></iframe>");
 });
-
+//TODO: Do something to make sure all the json loads.
 $.getJSON(getParameter("templateJson", "example.json"), 
 	function(form){
         //TODO: Load JSON as text.
@@ -225,10 +239,13 @@ $.getJSON(getParameter("templateJson", "example.json"),
         validate(jsonText);
         editor.getSession().setValue(jsonText);
 });
+$.getJSON('TemplateSchema.json', function(schema){
+    templateSchema = schema;
+});
 $('.target').attr("src", getParameter("imageFilename", "example.jpg"));
 
 var ondeSession = new onde.Onde($('#data-entry-form'));
-// Bind our form's submit event. We use this to get the data out from Onde
+// Bind our form's submit event. For now this is just for debugging.
 $('#data-entry-form').submit(function (evt) {
     evt.preventDefault();
     
@@ -245,29 +262,13 @@ $('#data-entry-form').submit(function (evt) {
 ////////////////
 //Tab handling
 ///////////////
-//Initialize jquery ui tabs
+/*
+Ths is the model for how the tabs work:
+When a tab is selected changes are saved to the template object.
+The show function for each tab then does something with the template object.
+If there is a problem the select function can return false to stop the tabs from switching.
+*/
 $( "#tabs" ).tabs({
-	show: function(event, ui) {
-		if (ui.panel.id == "rendered") {
-			initJCrop();
-		}
-		if (ui.panel.id == "jsonEditor") {
-			//Add the json template to the text area
-            var jsonText = JSON.stringify(templateObject, null, 5);
-            editor.getSession().setValue(jsonText);
-            //$('#json_input').val(jsonText);
-		}
-        if (ui.panel.id == "jsonGUI"){
-            $.getJSON('TemplateSchema.json', function(sampleSchema){
-                // Render the form with the schema
-                ondeSession.render(sampleSchema,
-                                   templateObject,
-                                   //{}
-                                   { collapsedCollapsibles: true }
-                                   );
-            });
-        }
-	},
     select: function(event, ui) {
         var currentTabId = $('#tabs .ui-tabs-panel:not(.ui-tabs-hide)').attr('id');
         
@@ -277,7 +278,6 @@ $( "#tabs" ).tabs({
             }
         }
         else if (currentTabId === "jsonEditor") {
-            //var jsonText = $('#json_input').val();
             var jsonText = editor.getSession().getValue(jsonText);
             var validJSON = validate(jsonText);
             if( validJSON ){
@@ -291,12 +291,32 @@ $( "#tabs" ).tabs({
         else if (currentTabId === "jsonGUI") {
             var outData = ondeSession.getData();
             if (outData.errorCount) {
-                console.error(outData);
+                return false;
             } else {
-                  templateObject = outData.data;
+                //TODO: Could add some code here that looks at the inherited properties
+                // in the templateObject and uses them to clean up the onde output.
+                $.extend(true, templateObject, outData.data);
+                //templateObject = outData.data;
             }
         }
-    }
+    },
+    show: function(event, ui) {
+		if (ui.panel.id == "rendered") {
+			initJCrop();
+		}
+		if (ui.panel.id == "jsonEditor") {
+            var jsonText = JSON.stringify(templateObject, null, 5);
+            editor.getSession().setValue(jsonText);
+		}
+        if (ui.panel.id == "jsonGUI"){
+            
+            ondeSession.render(templateSchema,
+                               applyInheritance(templateObject, ["fields", "segments", "items"]),
+                               {}
+                               // { collapsedCollapsibles: true }
+                               );
+        }
+	}
 });
 
 });
