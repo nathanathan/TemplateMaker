@@ -68,8 +68,7 @@
                                 "additionalProperties": true,
                                 "default": {
                                     "empty": false
-                                },
-                                "test": 1
+                                }
                             },
                             "default_classification": {
                                 "required": true,
@@ -88,6 +87,7 @@
                                     "flip_training_data": {
                                         "description": "Flip and mirror the training examples to generate more training data.",
                                         "type": "boolean",
+                                        "required": true,
                                         "default": true
                                     },
                                     "alignment_radius": {
@@ -116,7 +116,7 @@
                         "type": "string"
                     },
                     "segments": {
-                        "description": "Segments are used to specify rectangualr areas of the form that a fields are bounded to.",
+                        "description": "Segments are used to specify rectangular areas of the form that the field is made up of.",
                         "type": "array",
                         "items": {
                             "type": "object",

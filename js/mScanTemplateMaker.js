@@ -1,5 +1,6 @@
 var templateObject;
 var editor;
+var jcrop_api;
 jQuery(function($){
     ////////////////
     //Initialization:
@@ -41,7 +42,6 @@ jQuery(function($){
     ////////////////
     //Tab handling
     ///////////////
-	var jcrop_api;
 	//Initialize jquery ui tabs
 	$( "#tabs" ).tabs({
 		show: function(event, ui) {
@@ -190,7 +190,7 @@ function segmentFunction(segment, index){
 
     var fieldName = segment.name;
 
-	var segmentDiv = $('<div id="seg_' + index + '"></div>')
+	var segmentDiv = $('<div id="seg_' + index + '" idx="'+index+'"></div>')
 			.css('top', segment.segment_y + 'px')
 			.css('left', segment.segment_x + 'px')
 			.css('width', segment.segment_width)
@@ -205,22 +205,36 @@ function segmentFunction(segment, index){
         segmentDiv.css('outline-style', 'dotted');
     }
     
+    var outputObject;
     segmentDiv.click(function(evt){
-        $('.selected').removeClass('selected');
-        $('.'+fieldName).addClass('selected');
-        
-        $("#json_out").val(JSON.stringify( findField(fieldName) , null, 5));
-        $(this).click(function(evt){
+        evt.stopPropagation();
+        if($(this).hasClass('selected')){
+            //Add a item
             var location = $(this).offset();
-            var x = evt.pageX - location.left - segment.classifier.classifier_width/2,
-                y = evt.pageY - location.top - segment.classifier.classifier_height/2;
+            var x = evt.pageX - location.left,
+                y = evt.pageY - location.top ;
             var newItem = $('<div>').addClass('item').addClass('newItem')
-                .css("top", y).css("left", x)
+                .css("top", y - segment.classifier.classifier_width/2)
+                .css("left", x - segment.classifier.classifier_height/2)
                 .css('width', segment.classifier.classifier_width)
                 .css("height", segment.classifier.classifier_height);
-            
             $(this).append(newItem);
-        });
+            var segmentObj = outputObject.segments[$(this).attr('idx')];
+            var newItemObj = {"item_x" : x, "item_y" : y};
+            if(segmentObj.items !== undefined){
+                segmentObj.items.push(newItemObj);
+            }
+            else{
+                segmentObj.items = [newItemObj];
+                segmentObj.items = segmentObj.items.concat(outputObject.items);
+            }
+        }
+        else{
+            $('.selected').removeClass('selected');
+            $('.'+fieldName).addClass('selected');
+            outputObject = jQuery.extend(true, {}, findField(fieldName));
+        }
+        $("#json_out").val(JSON.stringify( outputObject , null, 5));
     });
     
 	segmentDiv.data('segmentObj', segment);

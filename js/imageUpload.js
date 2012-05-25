@@ -58,8 +58,11 @@ jQuery(function($){
         $(".target").css("height", height);
         templateObject.height = height;
         templateObject.width = width;
-        jcrop_api.destroy();
-        initJCrop();
+        //Refresh jcrop
+        if(jcrop_api !== undefined){
+            jcrop_api.destroy();
+            initJCrop();
+        }
     });
     
 	function createImage(file){
