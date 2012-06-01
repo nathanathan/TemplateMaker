@@ -47,8 +47,8 @@ function findField(fieldName){
     }
 }
 //Form Drawing functions:
+var outputObject;
 function segmentFunction(segment, index){
-
     var fieldName = segment.name;
 
     var segmentDiv = $('<div id="seg_' + index + '" idx="'+index+'"></div>')
@@ -66,7 +66,6 @@ function segmentFunction(segment, index){
         segmentDiv.css('outline-style', 'dotted');
     }
     
-    var outputObject;
     segmentDiv.click(function(evt){
         evt.stopPropagation();
         if($(this).hasClass('selected')){
@@ -81,13 +80,14 @@ function segmentFunction(segment, index){
                 .css("height", segment.classifier.classifier_height);
             $(this).append(newItem);
             var segmentObj = outputObject.segments[$(this).attr('idx')];
+            alert($(this).attr('idx'));
             var newItemObj = {"item_x" : x, "item_y" : y};
             if(segmentObj.items !== undefined){
                 segmentObj.items.push(newItemObj);
             }
             else{
                 segmentObj.items = [newItemObj];
-                segmentObj.items = segmentObj.items.concat(outputObject.items);
+                //segmentObj.items = segmentObj.items.concat(outputObject.items);
             }
         }
         else{
@@ -95,7 +95,8 @@ function segmentFunction(segment, index){
             $('.'+fieldName).addClass('selected');
             outputObject = jQuery.extend(true, {}, findField(fieldName));
         }
-        $("#json_out").val(JSON.stringify( outputObject , null, 5));
+        $("#json_out").val(JSON.stringify(outputObject , null, 5));
+        return;
     });
     
 	segmentDiv.data('segmentObj', segment);
@@ -154,10 +155,10 @@ function showCoords(c){
                 "segment_x": c.x,
                 "segment_y": c.y,
                 "segment_width": c.w,
-                "segment_height":c.h
+                "segment_height":c.h,
+                "align_segment":false
             }
         ],
-        "items":[],
         "classifier": {
             "classification_map": {
                 "empty": false
@@ -174,7 +175,6 @@ function clearCoords(){
     return;
 }
 function initJCrop(){
-
 	if(templateObject === null) return;
 
 	//Initialize jcrop
