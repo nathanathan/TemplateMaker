@@ -309,9 +309,9 @@ $( "#tabs" ).tabs({
             editor.getSession().setValue(jsonText);
 		}
         if (ui.panel.id == "jsonGUI"){
-            
             ondeSession.render(templateSchema,
-                               applyInheritance(templateObject, ["fields", "segments", "items"]),
+                               applyInheritance(templateObject, ["fields", "segments"]),
+                               //templateObject,
                                {}
                                // { collapsedCollapsibles: true }
                                );

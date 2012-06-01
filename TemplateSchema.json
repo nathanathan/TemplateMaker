@@ -23,29 +23,6 @@
             "items": {
                 "type": "object",
                 "properties": {
-                    "items": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "item_x": {
-                                    "required": true,
-                                    "type": "number"
-                                },
-                                "item_y": {
-                                    "required": true,
-                                    "type": "number"
-                                },
-                                "label": {
-                                    "type": "string"
-                                },
-                                "value": {
-                                    "description": "Required if the field type is select.",
-                                    "type": "any"
-                                }
-                            }
-                        }
-                    },
                     "classifier": {
                         "type": "object",
                         "required": false,
@@ -83,7 +60,7 @@
                                 "display": "hidden",
                                 "type": "object",
                                 "required": false,
-                                "properties":{
+                                "properties": {
                                     "eigenvalues": {
                                         "type": "integer",
                                         "default": 9
@@ -141,8 +118,31 @@
                                     "required": true,
                                     "type": "number"
                                 },
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "item_x": {
+                                                "required": true,
+                                                "type": "number"
+                                            },
+                                            "item_y": {
+                                                "required": true,
+                                                "type": "number"
+                                            },
+                                            "label": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "description": "Required if the field type is select.",
+                                                "type": "any"
+                                            }
+                                        }
+                                    }
+                                },
                                 "align_segment": {
-                                    "description": "If this segment has a bounding rectagle it can be used for additional alignment if this is true. For flat images this isn't necessairy.",
+                                    "description": "If this segment has a bounding rectagle it will be used for additional alignment if this is true. For flat images this isn't necessairy.",
                                     "default": false,
                                     "required": false,
                                     "type": "boolean"
