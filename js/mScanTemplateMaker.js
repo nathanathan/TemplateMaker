@@ -80,7 +80,6 @@ function segmentFunction(segment, index){
                 .css("height", segment.classifier.classifier_height);
             $(this).append(newItem);
             var segmentObj = outputObject.segments[$(this).attr('idx')];
-            alert($(this).attr('idx'));
             var newItemObj = {"item_x" : x, "item_y" : y};
             if(segmentObj.items !== undefined){
                 segmentObj.items.push(newItemObj);
@@ -293,10 +292,14 @@ $( "#tabs" ).tabs({
             if (outData.errorCount) {
                 return false;
             } else {
-                //TODO: Could add some code here that looks at the inherited properties
-                // in the templateObject and uses them to clean up the onde output.
-                $.extend(true, templateObject, outData.data);
-                //templateObject = outData.data;
+                //Here we take data out of onde and put it into the templateObject
+                //There are a few considerations for how this can be done:
+                //If we recursivley extend the templateObject i.e.:
+                //$.extend(true, templateObject, outData.data);
+                //deleting in onde won't be possible.
+                //There is also the issue of preserving properties not in the schema,
+                //which this won't do:
+                templateObject = outData.data;
             }
         }
     },

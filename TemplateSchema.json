@@ -23,6 +23,79 @@
             "items": {
                 "type": "object",
                 "properties": {
+                    "type": {
+                        "default": "input",
+                        "enum": ["input", "select", "select1"],
+                        "required": true,
+                        "description": "Correponds with xform body element types.",
+                        "type": "string"
+                    },
+                    "name": {
+                        "required": true,
+                        "description": "A unique name used to identify this field. Must follow xml naming conventions.",
+                        "type": "string"
+                    },
+                    "label": {
+                        "type": "string"
+                    },
+                    "hint": {
+                        "type": "string",
+                        "description": "A optional description of what this field is for."
+                    },
+                    "segments": {
+                        "description": "Segments are used to specify rectangular areas of the form that the field is made up of.",
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "segment_height": {
+                                    "required": true,
+                                    "type": "number"
+                                },
+                                "segment_width": {
+                                    "required": true,
+                                    "type": "number"
+                                },
+                                "segment_x": {
+                                    "required": true,
+                                    "type": "number"
+                                },
+                                "segment_y": {
+                                    "required": true,
+                                    "type": "number"
+                                },
+                                "items": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "item_x": {
+                                                "required": true,
+                                                "type": "number"
+                                            },
+                                            "item_y": {
+                                                "required": true,
+                                                "type": "number"
+                                            },
+                                            "label": {
+                                                "type": "string"
+                                            },
+                                            "value": {
+                                                "description": "Required if the field type is select.",
+                                                "type": "any"
+                                            }
+                                        }
+                                    }
+                                },
+                                "align_segment": {
+                                    "description": "If this segment has a bounding rectagle it will be used for additional alignment if this is true. For flat images this isn't necessairy.",
+                                    "default": false,
+                                    "required": false,
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    },
                     "classifier": {
                         "type": "object",
                         "required": false,
@@ -77,75 +150,6 @@
                                         "required": false,
                                         "type": "number"
                                     }
-                                }
-                            }
-                        }
-                    },
-                    "label": {
-                        "type": "string"
-                    },
-                    "name": {
-                        "required": true,
-                        "description": "A unique name used to identify this field. Must follow xml naming conventions.",
-                        "type": "string"
-                    },
-                    "type": {
-                        "default": "input",
-                        "enum": ["input", "select", "select1"],
-                        "required": true,
-                        "description": "Correponds with xform body element types.",
-                        "type": "string"
-                    },
-                    "segments": {
-                        "description": "Segments are used to specify rectangular areas of the form that the field is made up of.",
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "segment_height": {
-                                    "required": true,
-                                    "type": "number"
-                                },
-                                "segment_width": {
-                                    "required": true,
-                                    "type": "number"
-                                },
-                                "segment_x": {
-                                    "required": true,
-                                    "type": "number"
-                                },
-                                "segment_y": {
-                                    "required": true,
-                                    "type": "number"
-                                },
-                                "items": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "item_x": {
-                                                "required": true,
-                                                "type": "number"
-                                            },
-                                            "item_y": {
-                                                "required": true,
-                                                "type": "number"
-                                            },
-                                            "label": {
-                                                "type": "string"
-                                            },
-                                            "value": {
-                                                "description": "Required if the field type is select.",
-                                                "type": "any"
-                                            }
-                                        }
-                                    }
-                                },
-                                "align_segment": {
-                                    "description": "If this segment has a bounding rectagle it will be used for additional alignment if this is true. For flat images this isn't necessairy.",
-                                    "default": false,
-                                    "required": false,
-                                    "type": "boolean"
                                 }
                             }
                         }
