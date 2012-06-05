@@ -1,7 +1,7 @@
 .coords{
 	position: fixed;
 	left: 0;
-	top: 150px;
+	top: 100px;
     z-index: 399;
 }
 .validation-message {
