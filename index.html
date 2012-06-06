@@ -8,7 +8,7 @@
         <script src="jcrop/js/jquery.min.js" type="text/javascript"></script>
         <script src="jcrop/js/jquery.Jcrop.js" type="text/javascript"></script>
         <link rel="stylesheet" href="jcrop/css/jquery.Jcrop.css" type="text/css" />
-        <link rel="stylesheet" href="jcrop/demos/demo_files/demos.css" type="text/css" />
+        <!-- <link rel="stylesheet" href="jcrop/demos/demo_files/demos.css" type="text/css" />-->
         
         <!-- For tabs and draggables (TODO: put this in separate directory)-->
         <link type="text/css" href="css/ui-lightness/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
@@ -38,13 +38,12 @@
 	</head>
 <body>
 <div id="tabs">
-
 	<ul>
 		<li><a href="#jsonEditor">JSON</a></li>
 		<li><a href="#rendered">Rendered Template</a></li>
         <li><a href="#jsonGUI">JSON GUI</a></li>
         <li><a href="#tips">Tips</a></li>
-        <li><a href="#acknowledgements">Software info</a></li>
+        <li class="devtab"><a href="#acknowledgements">Software info</a></li>
 	</ul>
 
     <div id="jsonEditor">
@@ -96,13 +95,14 @@
         </ul>
     </div>
     <div id="acknowledgements">
-        <div>
+        <div><!-- Render shared markdown here -->
             <a href="https://github.com/nathanathan/TemplateMaker">Template Editor Source</a><br />
             <a href="https://github.com/nathanathan/ODKScan-cores">ODK Scan</a><br />
             <p>Components:</p>
             <a href="http://jquery.com/">jQuery</a><br />
             <a href="http://deepliquid.com/content/Jcrop.html">Jcrop</a><br />
             <a href="http://ace.ajax.org/">Ace</a><br />
+            <a href="https://github.com/nathanathan/onde">Onde</a><br />
         </div>
     </div>
 </div>

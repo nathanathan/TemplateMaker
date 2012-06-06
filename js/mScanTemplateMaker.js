@@ -321,5 +321,5 @@ $( "#tabs" ).tabs({
         }
 	}
 });
-
+$('.devtab').css("float", "right");
 });
