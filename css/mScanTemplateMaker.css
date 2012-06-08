@@ -1,8 +1,12 @@
 .coords{
-	position: fixed;
-	left: 0;
-	top: 100px;
-    z-index: 399;
+    vertical-align:top;
+    display: inline-block;
+}
+#dropbox{
+    display: inline-block;
+}
+#rendered{
+    white-space: nowrap;
 }
 .validation-message {
     padding: 1em;
