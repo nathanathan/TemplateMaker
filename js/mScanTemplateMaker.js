@@ -188,50 +188,51 @@ function initJCrop(){
         formFunction(templateObject);
 	});	
 }
-//TODO: Use JSV
-function validate(jsonText){
-    try {
-        var reformat = false;
-        var result = jsonlint.parse(jsonText);
-        
-        $.each(result.fields, function(idx, field){
-            //validate name
-            if(field.name){
-                if(/[0-9A-Z]/.test(field.name[0])){
-                    throw 'Name: [' + field.name + '] begins with a number or uppercase letter.';
-                } else if(/\s/.test(field.name)){
-                    throw 'Name: [' + field.name + '] has whitespace in it.';
-                }
-            } else {
-                throw 'Field with no name: ' + JSON.stringify(field);
-            }
-            //check for double bubbles
-            var items = [];
-            if('items' in field){
-                items = field.item;
-            } else if('segments' in field && field.segments.length > 0 && 'items' in field.segments[0]){
-                items = field.segments[0].items;
-            }
-            $.each(items, function(idx1, item1){
-                $.each(items.slice(idx1+1), function(idx2, item2){
-                    if(item1.item_x === item2.item_x &&
-                       item1.item_y === item2.item_y){
-                        throw 'Overlapping items in field: ' + field.name;
-                   }
-                });
-            });
+//Validates a single field object
+function validateField(field){
+    //validate name
+    if(field.name){
+        if(/[0-9A-Z]/.test(field.name[0])){
+            throw 'Name: [' + field.name + '] begins with a number or uppercase letter.';
+        } else if(/\s/.test(field.name)){
+            throw 'Name: [' + field.name + '] has whitespace in it.';
+        }
+    } else {
+        throw 'Field with no name: ' + JSON.stringify(field);
+    }
+    //check for double bubbles
+    var items = [];
+    if('items' in field){
+        items = field.item;
+    } else if('segments' in field && field.segments.length > 0 && 'items' in field.segments[0]){
+        items = field.segments[0].items;
+    }
+    $.each(items, function(idx1, item1){
+        $.each(items.slice(idx1+1), function(idx2, item2){
+            if(item1.item_x === item2.item_x &&
+               item1.item_y === item2.item_y){
+                throw 'Overlapping items in field: ' + field.name;
+           }
         });
-        
+    });
+
+    return field;
+}
+//Parse and validate some jsonText
+//Return a JSON object if it is valid
+//Otherwise return false
+//Also updates the UI to reflect validation status.
+function validate(jsonText){
+    try{
+        var result = jsonlint.parse(jsonText);
+        $.each(result.fields, function(idx, field){validateField(field);})
         if (result) {
             $('.validation-message').text("JSON is valid!");
             $('.validation-message').removeClass('fail');
             $('.validation-message').addClass('pass');
-            if (reformat) {
-                //document.getElementById("source").value = JSON.stringify(result, null, "  ");
-            }
             return result;
         }
-    } catch(e) {
+    } catch(e){
         $('.validation-message').text(e);
         $('.validation-message').addClass('fail');
         return false;
@@ -241,14 +242,20 @@ function validate(jsonText){
 //Initialization:
 ///////////////
 $("#add_field").click(function(){
-    var validJSON = validate($("#json_out").val());
-    if( validJSON ){
-        addUpdateField(validJSON);
-        jcrop_api.destroy();
-        initJCrop();
-    }
-    else{
-        alert("Invalid JSON");
+    try{
+        var jsonText = $("#json_out").val();
+        var validJSON = jsonlint.parse(jsonText);
+        validateField(validJSON);
+        if( validJSON ){
+            addUpdateField(validJSON);
+            jcrop_api.destroy();
+            initJCrop();
+        }
+        else{
+            alert("No valid JSON.");
+        }
+    } catch(e){
+        alert("Invalid JSON:\n"+e);
     }
 });
 
