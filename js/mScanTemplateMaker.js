@@ -193,6 +193,35 @@ function validate(jsonText){
     try {
         var reformat = false;
         var result = jsonlint.parse(jsonText);
+        
+        $.each(result.fields, function(idx, field){
+            //validate name
+            if(field.name){
+                if(/[0-9A-Z]/.test(field.name[0])){
+                    throw 'Name: [' + field.name + '] begins with a number or uppercase letter.';
+                } else if(/\s/.test(field.name)){
+                    throw 'Name: [' + field.name + '] has whitespace in it.';
+                }
+            } else {
+                throw 'Field with no name: ' + JSON.stringify(field);
+            }
+            //check for double bubbles
+            var items = [];
+            if('items' in field){
+                items = field.item;
+            } else if('segments' in field && field.segments.length > 0 && 'items' in field.segments[0]){
+                items = field.segments[0].items;
+            }
+            $.each(items, function(idx1, item1){
+                $.each(items.slice(idx1+1), function(idx2, item2){
+                    if(item1.item_x === item2.item_x &&
+                       item1.item_y === item2.item_y){
+                        throw 'Overlapping items in field: ' + field.name;
+                   }
+                });
+            });
+        });
+        
         if (result) {
             $('.validation-message').text("JSON is valid!");
             $('.validation-message').addClass('pass');
@@ -202,7 +231,7 @@ function validate(jsonText){
             return result;
         }
     } catch(e) {
-        ('.validation-message').text(e);
+        $('.validation-message').text(e);
         $('.validation-message').addClass('fail');
         return false;
     }

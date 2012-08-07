@@ -51,16 +51,18 @@
         <pre id="validation-message" class="validation-message"></pre>
         
         <button id="save">Save</button><br />
-        <label>Offset x:</label>
-        <input class="offset_x" value=0></input><br />
-        <label>Offset y:</label>
-        <input class="offset_y" value=0></input><br />
-        <label>Scale x:</label>
-        <input class="scale_x" value=1></input><br />
-        <label>Scale y:</label>
-        <input class="scale_y" value=1></input><br />
-        <button id="transform" onclick='transformFunction()'>Transform</button><br />
-        <button id="convert" onclick='convertToNewSchema()'>Convert To New Schema Format</button>
+        <div class="well">
+            <label>Offset x:</label>
+            <input class="offset_x" value=0></input><br />
+            <label>Offset y:</label>
+            <input class="offset_y" value=0></input><br />
+            <label>Scale x:</label>
+            <input class="scale_x" value=1></input><br />
+            <label>Scale y:</label>
+            <input class="scale_y" value=1></input><br />
+            <button id="transform" onclick='transformFunction()'>Transform</button><br />
+        </div>
+        <!-- <button id="convert" onclick='convertToNewSchema()'>Convert To New Schema Format</button> -->
 	</div>
 	<div id="rendered">
     		<div id="coords" class="coords">

@@ -43,7 +43,7 @@
     z-index: 389;
     outline-color: green;
     outline-width: 2px;
-    overflow:hidden;
+    overflow: hidden;
 }
 .selected {
     outline-color: red;
