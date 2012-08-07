@@ -224,6 +224,7 @@ function validate(jsonText){
         
         if (result) {
             $('.validation-message').text("JSON is valid!");
+            $('.validation-message').removeClass('fail');
             $('.validation-message').addClass('pass');
             if (reformat) {
                 //document.getElementById("source").value = JSON.stringify(result, null, "  ");

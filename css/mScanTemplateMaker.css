@@ -58,3 +58,6 @@
 .devtab{
     opacity: .50;
 }
+.well{
+    background-color: lightgray;
+}
