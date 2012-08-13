@@ -2,13 +2,22 @@ jQuery(function($){
     var dropbox = $('#dropbox');
 	
 	dropbox.filedrop({
+        url: 'http://174.129.255.189/upload_template',
 		// The name of the $_FILES entry:
-		paramname:'pic',
+		paramname:'templateImage',
 		
+        data: {
+            templateJson: function(){
+                return JSON.stringify(templateObject);
+            }
+        },
+        
 		maxfiles: 1,
         
         maxfilesize: 22,
-		
+        
+		allowedfiletypes: 'image/*',
+        
 		error: function(err, file) {
 			switch(err) {
 				case 'BrowserNotSupported':
@@ -24,21 +33,19 @@ jQuery(function($){
 					break;
 			}
 		},
-		
 		// Called before each upload is started
-		beforeEach: function(file){
-			if(!file.type.match(/^image\//)){
-				alert('Only images are allowed!');
-				
-				// Returning false will cause the
-				// file to be rejected
-				return false;
-			}
+		beforeSend: function(file, i, send){
+            console.log(this);
+            createImage(file);
+            var $sendBtn = $('<button>').click(function(){
+                send();
+            });
+            $('body').append($sendBtn);
 		},
 
-		uploadStarted:function(i, file, len){
-			createImage(file);
-		}
+        uploadFinished: function(i, file, response, time) {
+            console.log(response);
+        }
 
 	});
 	

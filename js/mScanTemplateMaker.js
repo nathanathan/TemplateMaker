@@ -1,3 +1,4 @@
+'use strict';
 var templateObject;
 var templateSchema;
 var editor;
@@ -192,8 +193,8 @@ function initJCrop(){
 function validateField(field){
     //validate name
     if(field.name){
-        if(/[0-9A-Z]/.test(field.name[0])){
-            throw 'Name: [' + field.name + '] begins with a number or uppercase letter.';
+        if(/[0-9]/.test(field.name[0])){
+            throw 'Name: [' + field.name + '] begins with a number.';
         } else if(/\s/.test(field.name)){
             throw 'Name: [' + field.name + '] has whitespace in it.';
         }
@@ -203,7 +204,7 @@ function validateField(field){
     //check for double bubbles
     var items = [];
     if('items' in field){
-        items = field.item;
+        items = field.items;
     } else if('segments' in field && field.segments.length > 0 && 'items' in field.segments[0]){
         items = field.segments[0].items;
     }

@@ -30,7 +30,7 @@ function transformFunction(){
         }
         return obj;
     }
-        
+    
     var jsonText = editor.getSession().getValue();
     var validJSON = jsonlint.parse(jsonText);
     if( validJSON ){

@@ -24,8 +24,8 @@
                 "type": "object",
                 "properties": {
                     "type": {
-                        "default": "input",
-                        "enum": ["input", "select", "select1"],
+                        "default": "string",
+                        "enum": ["string", "int", "select", "select1"],
                         "required": true,
                         "description": "Correponds with xform body element types.",
                         "type": "string"
