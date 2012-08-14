@@ -3,6 +3,10 @@ var templateObject;
 var templateSchema;
 var editor;
 var jcrop_api;
+var uploadTemplate = function(callback){
+    alert("Testing doesn't work with the default image right now.");
+    callback();
+};
 
 //src: http://stackoverflow.com/questions/1403888/get-url-parameter-with-jquery
 function getParameter(paramName, defaultValue) {
@@ -24,8 +28,6 @@ window.onbeforeunload = function(){
   }
 };
 
-
-jQuery(function($){
 ////////////////
 //Function Definitions
 ///////////////
@@ -53,7 +55,7 @@ function segmentFunction(segment, index){
     var fieldName = segment.name;
 
     var segmentDiv = $('<div id="seg_' + index + '" idx="'+index+'"></div>')
-    		.css('top', segment.segment_y + 'px')
+        	.css('top', segment.segment_y + 'px')
 			.css('left', segment.segment_x + 'px')
 			.css('width', segment.segment_width)
 			.css('height', segment.segment_height)
@@ -176,7 +178,6 @@ function clearCoords(){
 }
 function initJCrop(){
 	if(templateObject === null) return;
-
 	//Initialize jcrop
 	$('.target').Jcrop({
 		onChange:   showCoords,
@@ -239,6 +240,8 @@ function validate(jsonText){
         return false;
     }
 }
+
+jQuery(function($){
 ////////////////
 //Initialization:
 ///////////////
@@ -356,6 +359,14 @@ $( "#tabs" ).tabs({
                                {}
                                // { collapsedCollapsibles: true }
                                );
+        }
+        if (ui.panel.id == "test"){
+            $('.testStatus').text("Loading...");
+            uploadTemplate(function(i, file, response, time){
+                console.log(this);
+                //TODO: Response will contain token for uploading test images.
+                $('.testStatus').text("Done.");
+            });
         }
 	}
 });

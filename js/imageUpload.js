@@ -35,12 +35,22 @@ jQuery(function($){
 		},
 		// Called before each upload is started
 		beforeSend: function(file, i, send){
-            console.log(this);
+            var that = this;
             createImage(file);
+            uploadTemplate = function(callback){
+                var defaultUploadFinished = that.uploadFinished;
+                that.uploadFinished = function(i, file, response, time){
+                    callback(i, file, response, time);
+                    defaultUploadFinished(i, file, response, time);
+                };
+                send();
+            };
+            /*
             var $sendBtn = $('<button>').click(function(){
                 send();
             });
             $('body').append($sendBtn);
+            */
 		},
 
         uploadFinished: function(i, file, response, time) {
