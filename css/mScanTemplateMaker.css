@@ -62,5 +62,13 @@
     background-color: lightgray;
 }
 #testImageDrop{
+    width:20em;
     background-color: lightgray;
+}
+.status{
+    width:20em;
+    background-color: pink;
+}
+#test button{
+    width:20em;
 }

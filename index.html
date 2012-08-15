@@ -85,13 +85,17 @@
         </form>
     </div>
     <div id="test">
-        <button id="uploadTemplate">Upload Current Template</button>
-        <div id="testImageDrop">Drop your test image here.</div>
-        
         <form method="post" action="http://174.129.255.189/test_template" target="_blank">
             <input type="hidden" name="sessionToken">
             <input type="submit" value="Preview">
         </form>
+        <button id="uploadTemplate">Upload Current Template</button>
+        <div id="templateStatus" class="status">templateStatus</div>
+        <div id="testImageDrop">
+            <p>Drop your test image here.</p>
+            <div id="testImageStatus" class="status">testImageStatus</div>
+            <img id="testImage" alt="testImage" />
+        </div>
     </div>
     <div id="tips">
         <h1>Tips:</h1>

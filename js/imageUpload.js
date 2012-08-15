@@ -1,7 +1,9 @@
 jQuery(function($){
     var sessionToken = (new Date()).toISOString()
     $('input[name=sessionToken]').val(sessionToken);
-    
+    $("#uploadTemplate").click(function(){
+        alert("You cannot upload the default template.");
+    });
     ////TemplateImage upload
     $('#dropbox').filedrop({
         url: 'http://174.129.255.189/upload_template',
@@ -64,7 +66,8 @@ jQuery(function($){
 
         uploadFinished: function(i, file, response, time) {
             console.log(response);
-            $("#uploadTemplate").after("done");//TODO: Add datestamp
+            var templateStatus = $("#templateStatus");
+            templateStatus.text("Last sent: " + (new Date()).toTimeString());
         }
 
 	});
@@ -112,7 +115,7 @@ jQuery(function($){
     ////test image upload
     $('#testImageDrop').filedrop({
         url: 'http://174.129.255.189/upload_form',
-    	// The name of the $_FILES entry:
+
 		paramname:'image',
 		
         data: {
@@ -140,29 +143,24 @@ jQuery(function($){
 					break;
 			}
 		},
-		// Called before each upload is started
 		beforeSend: function(file, i, send){
             var that = this;
         	var reader = new FileReader();
     		reader.onload = function(e){
-                var $imageContainer = $("#testImageDrop");
-    			$imageContainer.css("width", "auto");
-    			$imageContainer.css("height", "auto");
-        		// e.target.result holds the DataURL which
-    			// can be used as a source of the image:
-                $imageContainer.attr('src', e.target.result);
+                var $testImage = $("#testImage");
+    			$testImage.css("width", "auto");
+    			$testImage.css("height", "auto");
+                $testImage.attr('src', e.target.result);
                 console.log(e);
                 send();
     		};
             
-    		// Reading the file as a DataURL. When finished,
-    		// this will trigger the onload function above:
     		reader.readAsDataURL(file);
 		},
 
         uploadFinished: function(i, file, response, time) {
-            var $imageContainer = $("#testImageDrop");
-            $imageContainer.after("sent");
+            var $testImageStatus = $("#testImageStatus");
+            $testImageStatus.text("Last sent: " + (new Date()).toTimeString());
             console.log(response);
         }
 
