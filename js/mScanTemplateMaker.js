@@ -361,12 +361,16 @@ $( "#tabs" ).tabs({
                                );
         }
         if (ui.panel.id == "test"){
+            /*
             $('.testStatus').text("Loading...");
             uploadTemplate(function(i, file, response, time){
                 console.log(this);
                 //TODO: Response will contain token for uploading test images.
-                $('.testStatus').text("Done.");
+                var $iframe = $('<iframe>');
+                $iframe.attr('src', response.imageUploadURL);
+                $('.testStatus').replaceWith($iframe);
             });
+            */
         }
 	}
 });
