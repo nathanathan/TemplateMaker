@@ -200,7 +200,10 @@ function validateField(field){
             throw 'Name: [' + field.name + '] has whitespace in it.';
         }
     } else {
-        throw 'Field with no name: ' + JSON.stringify(field);
+        throw 'Field with no name: ' + JSON.stringify(field, 2, 2);
+    }
+    if(!field.type){
+        throw 'Field with no type: ' + JSON.stringify(field, 2, 2);
     }
     //check for double bubbles
     var items = [];
@@ -235,7 +238,7 @@ function validate(jsonText){
             return result;
         }
     } catch(e){
-        $('.validation-message').text(e);
+        $('.validation-message').text(String(e));
         $('.validation-message').addClass('fail');
         return false;
     }
@@ -283,7 +286,7 @@ $.getJSON('TemplateSchema.json', function(schema){
     templateSchema = schema;
 });
 $('.target').attr("src", getParameter("imageFilename", "example.jpg"));
-
+/*
 var ondeSession = new onde.Onde($('#data-entry-form'));
 // Bind our form's submit event. For now this is just for debugging.
 $('#data-entry-form').submit(function (evt) {
@@ -299,6 +302,7 @@ $('#data-entry-form').submit(function (evt) {
     }
     return false;
 });
+*/
 ////////////////
 //Tab handling
 ///////////////
@@ -328,6 +332,7 @@ $( "#tabs" ).tabs({
                 return false;
             }
         }
+        /*
         else if (currentTabId === "jsonGUI") {
             var outData = ondeSession.getData();
             if (outData.errorCount) {
@@ -343,24 +348,17 @@ $( "#tabs" ).tabs({
                 templateObject = outData.data;
             }
         }
+        */
     },
     show: function(event, ui) {
 		if (ui.panel.id == "rendered") {
 			initJCrop();
 		}
-		if (ui.panel.id == "jsonEditor") {
+		else if (ui.panel.id == "jsonEditor") {
             var jsonText = JSON.stringify(templateObject, null, 5);
             editor.getSession().setValue(jsonText);
 		}
-        if (ui.panel.id == "jsonGUI"){
-            ondeSession.render(templateSchema,
-                               applyInheritance(templateObject, ["fields", "segments"]),
-                               //templateObject,
-                               {}
-                               // { collapsedCollapsibles: true }
-                               );
-        }
-        if (ui.panel.id == "test"){
+        else if (ui.panel.id == "test"){
             /*
             $('.testStatus').text("Loading...");
             uploadTemplate(function(i, file, response, time){
@@ -372,6 +370,16 @@ $( "#tabs" ).tabs({
             });
             */
         }
+        /*
+        else if (ui.panel.id == "jsonGUI"){
+            ondeSession.render(templateSchema,
+                               applyInheritance(templateObject, ["fields", "segments"]),
+                               //templateObject,
+                               {}
+                               // { collapsedCollapsibles: true }
+                               );
+        }
+        */
 	}
 });
 $('.devtab').css("float", "right");

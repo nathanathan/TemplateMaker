@@ -23,10 +23,10 @@
         
         <script src="js/jsonlint.js"></script>
         
-        <!-- Onde -->
+        <!-- Onde 
         <link rel="stylesheet" href="onde/src/onde.css" type="text/css"/>
         <script type="text/javascript" src="onde/src/onde.js"></script>
-        
+        -->
         <!-- Ace -->
         <script src="ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
         
@@ -39,11 +39,11 @@
 <body>
 <div id="tabs">
 	<ul>
-		<li><a href="#jsonEditor">JSON</a></li>
-		<li><a href="#rendered">Rendered Template</a></li>
-        <li><a href="#jsonGUI">JSON GUI</a></li>
-        <li><a href="#test">Test</a></li>
-        <li><a href="#tips">Tips</a></li>
+		<li><a href="#jsonEditor">Edit Template JSON</a></li>
+		<li><a href="#rendered">Render Template</a></li>
+        <!-- <li><a href="#jsonGUI">JSON GUI</a></li> -->
+        <li><a href="#test">Test Template</a></li>
+        <li><a href="#tips">Help</a></li>
         <li class="devtab"><a href="#acknowledgements">Software info</a></li>
 	</ul>
 
@@ -76,14 +76,14 @@
 			    <img id="target" class="target" alt="form" />
 			</div>
 	</div>
+    <!--
     <div id="jsonGUI">
         <form id="data-entry-form">
-          <!-- The element where the generated form goes to. -->
           <div class="onde-panel"></div>
-          <!-- The submit button. -->
           <p class="actions"><button type="submit" name="submit">Debug</button></p>
         </form>
     </div>
+    -->
     <div id="test">
         <form method="post" action="http://174.129.255.189/test_template" target="_blank">
             <input type="hidden" name="sessionToken">
